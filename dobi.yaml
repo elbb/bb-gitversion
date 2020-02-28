@@ -3,9 +3,10 @@
 # ===================================================
 
 alias=bb-gitversion-build:
-  tasks: []
+  tasks:
+  - gitversion-build
   annotations:
-    description: "-> build all content (not implemented yet)"
+    description: "-> build all content"
 
 alias=bb-gitversion-deploy:
   tasks: []

@@ -6,6 +6,7 @@ meta:
   project: bb-gitversion
   include:
   - dobi.yaml
+  - gitversion/dobi.yaml
 
 # ===================================================
 # alias
