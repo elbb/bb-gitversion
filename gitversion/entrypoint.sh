@@ -8,8 +8,8 @@ if [ -z "${GV_GIT}" ]; then
 fi
 
 if [ -z "${GV_GEN}" ]; then
-  echo "No generation folder supplied. Using default destination '/repo'."
-  GV_GEN=/repo
+  echo "No generation folder supplied. Using default destination '/gen'."
+  GV_GEN=/gen
 fi
 
 if [ -z "${GV_USERID}" ]; then
