@@ -1,18 +1,4 @@
 # ===================================================
-# mount points
-# ===================================================
-
-mount=mount-gitversion-source-dir:
-  bind: "{fs.projectdir}"
-  path: /git
-  read-only: false # needs to be read/write to work correctly!
-
-mount=mount-gitversion-gen-dir:
-  bind: "{fs.projectdir}/gen/gitversion"
-  path: /gen
-  read-only: false
-
-# ===================================================
 # images
 # ===================================================
 
@@ -22,25 +8,11 @@ image=image-gitversion:
   tags: [dev]
 
 # ===================================================
-# jobs
-# ===================================================
-
-job=gitversion-generate-version:
-  use: image-gitversion
-  mounts:
-  - mount-gitversion-source-dir
-  - mount-gitversion-gen-dir
-  env:
-  - "GV_USERID={user.uid}"
-  - "GV_GIT=/git"
-  - "GV_GEN=/gen"
-
-# ===================================================
 # alias
 # ===================================================
 
 alias=gitversion-build:
   tasks:
-    - gitversion-generate-version
+    - image-gitversion
   annotations:
-    description: "-> build all gitversion content"
+    description: "-> build all gitversion content."
