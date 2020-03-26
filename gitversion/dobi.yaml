@@ -1,0 +1,16 @@
+# ===================================================
+# images
+# ===================================================
+
+image=image-gitversion:
+  image: elbb/bb-gitversion
+  context: gitversion
+  tags: [dev]
+
+# ===================================================
+# alias
+# ===================================================
+
+alias=gitversion-build:
+  tasks:
+    - image-gitversion

@@ -3,9 +3,10 @@
 # ===================================================
 
 meta:
-  project: bb-buildingblock
+  project: bb-gitversion
   include:
   - dobi.yaml
+  - gitversion/dobi.yaml
 
 # ===================================================
 # alias
@@ -13,18 +14,18 @@ meta:
 
 alias=build:
   tasks:
-  - bb-buildingblock-build
+  - bb-gitversion-build
   annotations:
-    description: "[alias] bb-buildingblock-build"
+    description: "[alias] bb-gitversion-build"
   
 alias=deploy:
   tasks:
-  - bb-buildingblock-deploy
+  - bb-gitversion-deploy
   annotations:
-    description: "[alias] bb-buildingblock-deploy"
+    description: "[alias] bb-gitversion-deploy"
   
 alias=test: 
   tasks:
-  - bb-buildingblock-test
+  - bb-gitversion-test
   annotations: 
-    description: "[alias] bb-buildingblock-test"
+    description: "[alias] bb-gitversion-test"

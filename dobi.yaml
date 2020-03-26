@@ -2,17 +2,19 @@
 # alias
 # ===================================================
 
-alias=bb-buildingblock-build:
-  tasks: []
+alias=bb-gitversion-build:
+  tasks:
+  - gitversion-build
   annotations:
-    description: "-> build all content (not implemented yet)"
+    description: "-> build all content"
 
-alias=bb-buildingblock-deploy:
-  tasks: []
+alias=bb-gitversion-deploy:
+  tasks:
+  - image-gitversion:push
   annotations:
-    description: "-> deploy all content (not implemented yet)"
+    description: "-> deploy all content"
 
-alias=bb-buildingblock-test: 
+alias=bb-gitversion-test: 
   tasks: []
   annotations: 
     description: "-> test all content (not implemented yet)"
