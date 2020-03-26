@@ -14,5 +14,3 @@ image=image-gitversion:
 alias=gitversion-build:
   tasks:
     - image-gitversion
-  annotations:
-    description: "-> build all gitversion content."
