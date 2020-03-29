@@ -15,7 +15,9 @@ Initial Version
 
 ### Added
 
-- dobi environment template for local builds
-- license informations (MIT and Apache V 2.0)
-- changelog template
-- automated versioning (using elbb/bb-gitversion)
+- integrated gitversion
+- added json output
+- added env output
+- added plain output
+- integrated dobi as local build environment
+- added license informations (MIT and Apache 2.0)
