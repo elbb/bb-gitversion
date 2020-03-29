@@ -1,0 +1,36 @@
+# ===================================================
+# mount points
+# ===================================================
+
+mount=mount-gitversion-source-dir:
+  bind: .
+  path: /git
+  read-only: false # needs to be read/write to work correctly!
+
+mount=mount-gitversion-gen-dir:
+  bind: gen/gitversion
+  path: /gen
+  read-only: false
+
+# ===================================================
+# images
+# ===================================================
+
+image=image-bb-gitversion:
+  image: elbb/bb-gitversion
+  tags: ["0.1.0"]
+  pull: once
+
+# ===================================================
+# jobs
+# ===================================================
+
+job=gitversion-version:
+  use: image-bb-gitversion
+  mounts:
+  - mount-gitversion-source-dir
+  - mount-gitversion-gen-dir
+  sources: .
+  artifact: gen/gitversion/
+  env:
+  - "USERID={user.uid}"

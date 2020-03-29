@@ -5,7 +5,7 @@
 image=image-gitversion:
   image: elbb/bb-gitversion
   context: gitversion
-  tags: [dev]
+  tags: ["{env.GitVersion_MajorMinorPatch}"]
 
 # ===================================================
 # alias
