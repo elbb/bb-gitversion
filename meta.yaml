@@ -6,11 +6,18 @@ meta:
   project: bb-gitversion
   include:
   - dobi.yaml
+  - version.yaml
   - gitversion/dobi.yaml
 
 # ===================================================
 # alias
 # ===================================================
+
+alias=version:
+  tasks:
+  - bb-gitversion-version
+  annotations:
+    description: "[alias] bb-gitversion-version"
 
 alias=build:
   tasks:

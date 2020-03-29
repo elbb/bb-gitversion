@@ -1,3 +1,4 @@
+<img src="https://raw.githubusercontent.com/elbb/bb-gitversion/master/.assets/logo.png" height="200">
 
 # (e)mbedded (l)inux (b)uilding (b)locks - containerized GitVersion (with some improvements)
 
@@ -149,3 +150,21 @@ job=generate-version:
 embedded linux building blocks is a project to create reusable and
 adoptable blueprints for highly recurrent issues in building an internet
 connected embedded linux system.
+
+# License
+
+Licensed under either of
+
+* Apache License, Version 2.0, (./LICENSE-APACHE or <http://www.apache.org/licenses/LICENSE-2.0>)
+* MIT license (./LICENSE-MIT or <http://opensource.org/licenses/MIT>)
+
+at your option.
+
+# Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally
+submitted for inclusion in the work by you, as defined in the Apache-2.0
+license, shall be dual licensed as above, without any additional terms or
+conditions.
+
+Copyright (c) 2020 conplement AG
