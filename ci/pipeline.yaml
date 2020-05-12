@@ -43,8 +43,8 @@ jobs:
               - |
                 entrypoint.sh
           params:
-            GIT_PATH: df | grep source | awk  '{print $6}'
-            GEN_PATH: find /tmp/build/ -type d -name "gen"
+            GIT_PATH: inputfind source
+            GEN_PATH: outputfind gen
 
       - task: Test generated git version
         image: ubuntu
