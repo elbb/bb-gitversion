@@ -1,0 +1,2 @@
+#!/bin/bash
+echo $(df | grep ${1} | awk '{print $6}')
