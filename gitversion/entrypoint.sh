@@ -2,8 +2,44 @@
 set -o errexit   # abort on nonzero exitstatus
 set -o pipefail  # don't hide errors within pipes
 
-GIT=/git
-GEN=/gen
+if [ ! -z "$GIT_PATH" ]; then
+  # using eval to determine if input is a command or a directory
+  d=$(eval "$GIT_PATH" 2> /dev/null)
+  # directory
+  if [ "$?" != "0" ]; then
+    p=${GIT_PATH}
+  # command
+  else
+    echo GIT_PATH is a command.
+    p=${d}
+  fi
+  # create path if not existent
+  [ ! -d "$p" ] &&  echo creating ${p} && mkdir -p ${p}
+  GIT=${p}
+else
+  # fallback
+  GIT="/git"
+fi
+
+if [ ! -z "$GEN_PATH" ]; then
+  # using eval to determine if input is a command or a directory
+  d=$(eval "$GEN_PATH" 2> /dev/null)
+  # directory
+  if [ "$?" != "0" ]; then
+    p=${GEN_PATH}
+  # command
+  else
+    echo GEN_PATH is a command.
+    p=${d}
+  fi
+  # create path if not existent
+  [ ! -d "$p" ] &&  echo creating ${p} && mkdir -p ${p}
+  GEN=${p}
+else
+  # fallback
+  GEN="/gen"
+fi
+
 
 # check if /git is a git repository
 if [ ! -d "/git" ]; then
