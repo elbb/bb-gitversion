@@ -1,0 +1,54 @@
+resources:
+  - name: source
+    type: git
+    source:
+      uri: ((git_source))
+      private_key: ((privatekey))
+      branch: ((release_branch))
+      # tag_filter: "*"
+      # skip_ssl_verification: true
+
+  - name: bb-gitversion
+    type: docker-image
+    source:
+      repository: elbb/bb-gitversion
+      tag: 0.1.0
+
+  - name: ubuntu
+    type: docker-image
+    source:
+      repository: ubuntu
+      tag: 18.04
+
+jobs:
+  - name: Generate version and test it
+    public: true
+    plan:
+      - in_parallel:
+          - get: bb-gitversion
+          - get: source
+          - get: ubuntu
+      - task: Generate version
+        image: bb-gitversion
+        config:
+          platform: linux
+          outputs:
+            - name: gen
+          run:
+            path: /bin/bash
+            args:
+              - -exc
+              - |
+                cp -rv /gen gen
+      - task: Test generated git version
+        image: ubuntu
+        config:
+          platform: linux
+          inputs:
+            - name: gen
+          run:
+            path: /bin/bash
+            args:
+              - -exc
+              - |
+                ls -lR gen
