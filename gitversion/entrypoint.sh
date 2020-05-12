@@ -40,9 +40,8 @@ else
   GEN="/gen"
 fi
 
-
 # check if /git is a git repository
-if [ ! -d "/git" ]; then
+if [ ! -d "${GIT}" ]; then
   echo "No git repository supplied. use docker -v PATH_TO_YOUR_REPO:/git"
   exit 1
 fi
@@ -59,7 +58,7 @@ useradd --shell /bin/bash -u ${USERID} -o -c "" -m user
 # generate json file with git version infos
 JSON_DIR=${GEN}/json
 mkdir -p ${JSON_DIR}
-dotnet /app/GitVersion.dll gittools/gitversion:5.1.4-linux-ubuntu-18.04-netcoreapp3.1 ${GIT} > ${JSON_DIR}/gitversion.json
+/tools/dotnet-gitversion ${GIT} > ${JSON_DIR}/gitversion.json
 
 ###### generate env file ######
 
@@ -67,7 +66,6 @@ dotnet /app/GitVersion.dll gittools/gitversion:5.1.4-linux-ubuntu-18.04-netcorea
 ENV_DIR=${GEN}/env
 mkdir -p ${ENV_DIR}
 > ${ENV_DIR}/gitversion.env
-
 
 # parse json and create sourceable file with git version infos
 for s in $(cat ${JSON_DIR}/gitversion.json | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
