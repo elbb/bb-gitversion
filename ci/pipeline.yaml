@@ -12,7 +12,7 @@ resources:
     type: docker-image
     source:
       repository: elbb/bb-gitversion
-      tag: 0.1.0
+      tag: ci
 
   - name: ubuntu
     type: docker-image
@@ -32,6 +32,8 @@ jobs:
         image: bb-gitversion
         config:
           platform: linux
+          inputs:
+            - name: source
           outputs:
             - name: gen
           run:
@@ -39,7 +41,11 @@ jobs:
             args:
               - -exc
               - |
-                cp -rv /gen gen
+                entrypoint.sh
+          params:
+            GIT_PATH: df | grep source | awk  '{print $6}'
+            GEN_PATH: find /tmp/build/ -type d -name "gen"
+
       - task: Test generated git version
         image: ubuntu
         config:
@@ -51,4 +57,4 @@ jobs:
             args:
               - -exc
               - |
-                ls -lR gen
+                cat gen/json/gitversion.json
