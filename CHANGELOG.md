@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- concourse environment for ci/cd builds
+-   concourse environment for ci/cd builds
+
+## [0.2.0] - 2020-05-13
+
+### Added
+
+-   added env vars to specify directory locations for `git` and `gen`
 
 ## [0.1.0] - 2020-03-29
 
@@ -15,9 +21,9 @@ Initial Version
 
 ### Added
 
-- integrated gitversion
-- added json output
-- added env output
-- added plain output
-- integrated dobi as local build environment
-- added license informations (MIT and Apache 2.0)
+-   integrated gitversion
+-   added json output
+-   added env output
+-   added plain output
+-   integrated dobi as local build environment
+-   added license informations (MIT and Apache 2.0)
