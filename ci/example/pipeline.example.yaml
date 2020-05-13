@@ -29,7 +29,7 @@ resources:
   - name: image-((name))
     type: docker-image
     source:
-      repository: elbb/((name))
+      repository: ((destination))
       tag: latest
 
 jobs:
@@ -53,6 +53,7 @@ jobs:
               - -exc
               - |
                 entrypoint.sh && 
+                cat gen/json/gitversion.json && 
                 tar cvfz gen/gitversion.tar.gz gen/*
           params:
             GIT_PATH: source

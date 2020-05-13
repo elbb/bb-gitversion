@@ -3,6 +3,8 @@
 # -------------
 ## Specifies the name of the buildingblock
 name: bb-buildingblock
+## Specifies the destination of the docker image artifact
+destination: elbb/bb-buildingblock
 ## Specifies the version used for bb-gitversion
 bb-gitversion-version: 0.2.0
 

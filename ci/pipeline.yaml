@@ -47,6 +47,7 @@ jobs:
               - -exc
               - |
                 entrypoint.sh && 
+                cat gen/json/gitversion.json && 
                 tar cvfz gen/gitversion.tar.gz gen/*
           params:
             GIT_PATH: source
