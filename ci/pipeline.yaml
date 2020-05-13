@@ -4,30 +4,35 @@ resources:
     source:
       uri: ((git_source))
       private_key: ((privatekey))
-      branch: ((release_branch))
+      branch: ((git_branch))
+      skip_ssl_verification: ((git_skip_ssl_verification))
+      # This enables triggering on tag changes that match the glob pattern
       # tag_filter: "*"
-      # skip_ssl_verification: true
 
   - name: bb-gitversion
     type: docker-image
     source:
       repository: elbb/bb-gitversion
-      tag: ci
+      tag: ((bb-gitversion-version))
 
-  - name: ubuntu
-    type: docker-image
+  - name: s3-gitversion
+    type: s3
     source:
-      repository: ubuntu
-      tag: 18.04
+      bucket: ((name))
+      endpoint: ((s3_endpoint))
+      # at least one regex capture group is needed here
+      regexp: version/(gitversion).tar.gz
+      access_key_id: ((s3_access_key))
+      secret_access_key: ((s3_secret_key))
+      disable_ssl: ((s3_disable_ssl))
 
 jobs:
-  - name: Generate version and test it
+  - name: Generate gitversion and put it on s3
     public: true
     plan:
       - in_parallel:
           - get: bb-gitversion
           - get: source
-          - get: ubuntu
       - task: Generate version
         image: bb-gitversion
         config:
@@ -41,20 +46,12 @@ jobs:
             args:
               - -exc
               - |
-                entrypoint.sh
+                entrypoint.sh && 
+                tar cvfz gen/gitversion.tar.gz gen/*
           params:
-            GIT_PATH: inputfind source
-            GEN_PATH: outputfind gen
-
-      - task: Test generated git version
-        image: ubuntu
-        config:
-          platform: linux
-          inputs:
-            - name: gen
-          run:
-            path: /bin/bash
-            args:
-              - -exc
-              - |
-                cat gen/json/gitversion.json
+            GIT_PATH: source
+            GEN_PATH: gen
+      - put: s3-gitversion
+        params:
+          file: gen/gitversion.tar.gz
+          acl: public-read
