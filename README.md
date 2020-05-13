@@ -19,21 +19,21 @@ By default three dobi resources are predefined (but not implemented):
 These point to the resources defined in dobi.yaml.
 The separation between meta.yaml and dobi.yaml is necessary to integrate the building block into another building block via dobi.
 
-Version informations are generated automatically from git history by using building block bb-gitversion (<https://github.com/elbb/bb-gitversion>).
+Version information is generated automatically from git history by using building block bb-gitversion (<https://github.com/elbb/bb-gitversion>).
 
 ## Using concourse CI for a CI/CD build
 
 The pipeline file must be uploaded to concourse CI via `fly`. 
 Enter the build users ssh private key into the file `ci/credentials.template.yaml` and rename it to `ci/credentials.yaml`. 
-**Note, that files calld `credentials.yaml` will is ignored by `.gitignore` and will not be checked in.**
-In further releases there will be an key value store to keep track of the users credentials.
+**Note that files called `credentials.yaml` are ignored by `.gitignore` and will not be checked in.**
+In further releases there will be a key value store to keep track of the users credentials.
 Upload the pipeline file with fly:
 
     $ fly -t <target> set-pipeline -n -p bb-buildingblock -l ci/config.yaml -l ci/credentials.yaml -c ci/pipeline.yaml
 
-After sucessfully uploading the pipeline to concourse CI login and unpause it. After that the pipeline should be triggered by new commits on the master branch (or new tags if enabled in `pipeline.yaml`).
+After successfully uploading the pipeline to concourse CI login and unpause it. After that the pipeline should be triggered by new commits on the master branch (or new tags if enabled in `pipeline.yaml`).
 
-If you want to integrate this into another building block you should have a look at the [integration documentation](ci/example/README.md).
+If you want to integrate this into another building block, you should have a look at the [integration documentation](ci/example/README.md).
 
 # What is embedded linux building blocks
 

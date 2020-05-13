@@ -2,9 +2,9 @@
 
 # Concourse pipeline integration guide
 
-For using this concourse CI popeline it is recommended to have two config files:
+For using this concourse CI pipeline it is recommended to have two config files:
 
--   `config.yaml`: for production pruposes
+-   `config.yaml`: for production purposes
 -   `config.local.yaml`: for development and testing purposes
 
 The `config.yaml` is used to access the projects production release repository and branch and a real cloud S3 endpoint to store version artifacts.
@@ -12,17 +12,17 @@ The `config.local.yaml` is used to develop and test the pipeline for building bl
 
 # Example concourse CI pipeline
 
-This example is inteneded to make integration of the build pipeline more easy into other building blocks.
+This example is intended to show the integration of a build pipeline in a derived building block.
 
 ## Adaptions for your building block
 
 This section describes what needs to be done within the several files. 
-**Note, that files calld `credentials.yaml` will is ignored by `.gitignore` and will not be checked in.**
+**Note that files called `credentials.yaml` are ignored by `.gitignore` and will not be checked in.**
 
 ### config.example.yaml
 
 Open the `config.example.yaml` and specify the fields that are described.
-This config file shows an example for an fictive building block calld `bb-example`.
+This config file shows an example for a fictive building block called `bb-example`.
 
 Note: if you are using a real S3 endpoint you should enter those data. If you are using the local test environment specify like below.
 
@@ -84,7 +84,7 @@ The example builds the docker image with the Dockerfile located in `docker/Docke
             params:
               build: source/docker
               dockerfile: source/docker/Dockerfile
-              additional_tags: S3-gitversion/plain/SemVer
+              additional_tags: s3-gitversion/plain/SemVer
               tag_as_latest: true
 
 ## Using the pipeline
