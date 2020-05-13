@@ -1,4 +1,4 @@
-FROM gittools/gitversion:5.3.3-linux-ubuntu.18.04-x64-netcoreapp3.1
+FROM gittools/gitversion:5.1.4-linux-ubuntu-18.04-netcoreapp3.1
 
 # install necessary tooling for jq installation
 RUN apt-get update && \
@@ -18,6 +18,10 @@ RUN wget --no-check-certificate https://raw.githubusercontent.com/stedolan/jq/ma
     rm -f /tmp/jq-release.key && \
     rm -f /tmp/jq-linux64.asc && \
     rm -f /tmp/jq-linux64
+
+
+# copy GitVersion configuration
+COPY GitVersion.yaml /tools/GitVersion.yaml
 
 # copy script for semantic versioning generation
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

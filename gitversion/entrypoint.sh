@@ -32,7 +32,7 @@ useradd --shell /bin/bash -u ${USERID} -o -c "" -m user
 # generate json file with git version infos
 JSON_DIR=${GEN}/json
 mkdir -p ${JSON_DIR}
-/tools/dotnet-gitversion ${GIT} > ${JSON_DIR}/gitversion.json
+/tools/dotnet-gitversion ${GIT} /config /tools/GitVersion.yaml > ${JSON_DIR}/gitversion.json
 
 ###### generate env file ######
 
