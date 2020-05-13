@@ -1,3 +1,0 @@
-#!/bin/bash
-f=$(find . -type d -name ${1})
-echo $(realpath ${f})

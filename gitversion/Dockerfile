@@ -19,11 +19,6 @@ RUN wget --no-check-certificate https://raw.githubusercontent.com/stedolan/jq/ma
     rm -f /tmp/jq-linux64.asc && \
     rm -f /tmp/jq-linux64
 
-COPY inputfind /usr/local/bin/inputfind
-RUN chmod +x /usr/local/bin/inputfind
-COPY outputfind /usr/local/bin/outputfind
-RUN chmod +x /usr/local/bin/outputfind
-
 # copy script for semantic versioning generation
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
