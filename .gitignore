@@ -4,3 +4,4 @@ gen
 
 #dobi build tool
 .dobi
+ci/config.local.yaml

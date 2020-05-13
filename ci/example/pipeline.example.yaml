@@ -13,7 +13,7 @@ resources:
     type: docker-image
     source:
       repository: elbb/bb-gitversion
-      tag: ((bb-gitversion-version))
+      tag: ci
 
   - name: S3-gitversion
     type: s3
@@ -25,6 +25,12 @@ resources:
       access_key_id: ((s3_access_key))
       secret_access_key: ((s3_secret_key))
       disable_ssl: ((s3_disable_ssl))
+
+  - name: image-((name))
+    type: docker-image
+    source:
+      repository: elbb/((name))
+      tag: latest
 
 jobs:
   - name: Generate gitversion and put it on S3
@@ -55,3 +61,18 @@ jobs:
         params:
           file: gen/gitversion.tar.gz
           acl: public-read
+
+  - name: Create docker image for ((name)) and push it
+    public: true
+    plan:
+      - in_parallel:
+          - get: source
+          - get: s3-gitversion
+            params:
+              unpack: true
+      - put: image-((name))
+        params:
+          build: source/docker
+          dockerfile: source/docker/Dockerfile
+          additional_tags: S3-gitversion/plain/SemVer
+          tag_as_latest: true

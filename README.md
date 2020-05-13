@@ -4,7 +4,7 @@
 
 This code serves as a template for the creation of further building blocks with the purpose of giving all blocks a uniform structure and usage.
 
-## using dobi for local build
+## Using dobi for local build
 
 dobi should only be used via the `dobi.sh` script, because there important variables are set and the right scripts are included.
 
@@ -21,6 +21,18 @@ The separation between meta.yaml and dobi.yaml is necessary to integrate the bui
 
 Version informations are generated automatically from git history by using building block bb-gitversion (<https://github.com/elbb/bb-gitversion>).
 
+## Using concourse CI for a CI/CD build
+
+The pipeline file must be uploaded to concourse CI via `fly`. 
+
+    $ fly -t <target> set-pipeline -n -p bb-buildingblock -l ci/config.yaml -l ci/credentials.yaml -c ci/pipeline.yaml
+
+After sucessfully uploading the pipeline to concourse CI login and unpause it. After that the pipeline should be triggered by new commits on the master branch (or new tags if enabled in `pipeline.yaml`).
+
+**Note, that files calld `credentials.yaml` will is ignored by `.gitignore` and will not be checked in.**
+
+If you want to integrate this into another building block you should have a look at the [integration documentation](ci/example/README.md).
+
 # What is embedded linux building blocks
 
 embedded linux building blocks is a project to create reusable and
@@ -31,8 +43,8 @@ connected embedded linux system.
 
 Licensed under either of
 
-* Apache License, Version 2.0, (./LICENSE-APACHE or <http://www.apache.org/licenses/LICENSE-2.0>)
-* MIT license (./LICENSE-MIT or <http://opensource.org/licenses/MIT>)
+-   Apache License, Version 2.0, (./LICENSE-APACHE or <http://www.apache.org/licenses/LICENSE-2.0>)
+-   MIT license (./LICENSE-MIT or <http://opensource.org/licenses/MIT>)
 
 at your option.
 

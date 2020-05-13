@@ -2,26 +2,25 @@
 # General stuff
 # -------------
 ## Specifies the name of the buildingblock
-name: bb-buildingblock
+name: bb-example
 ## Specifies the version used for bb-gitversion
-bb-gitversion-version: ci
+bb-gitversion-version: 0.2.0
 
 # Git relevant stuff
 # ------------------
 ## Specify the git repository to work with
-git_source: https://github.com/<user>/bb-buildingblock.git
-## Specify the git branch to work with
+git_source: https://github.com/elbb/bb-example
+## Specify the branch to work with
 git_branch: master
 ## This enables/disables ssl verification of the git resource
 git_skip_ssl_verification: false
 
-# s3 relevant stuff
+# S3 relevant stuff
 # -----------------
-## Specify the s3 endpoint URI
-# Using docker hosts ip address for local environment when using min.io locally
+## Specify the S3 endpoint URI
 s3_endpoint: http://172.17.0.1:9000
 ## Specify access key and secret key
-s3_access_key: testaccess
-s3_secret_key: testsecret
-## This enables/disables the ssl verification for the s3 endpoint
-s3_disable_ssl: false
+s3_access_key: localaccess
+s3_secret_key: localsecret
+## This enables/disables the ssl verification for the S3 endpoint
+s3_disable_ssl: true
