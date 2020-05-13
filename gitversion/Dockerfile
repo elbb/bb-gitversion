@@ -1,4 +1,4 @@
-FROM gittools/gitversion:5.1.4-linux-ubuntu-18.04-netcoreapp3.1
+FROM gittools/gitversion:5.3.3-linux-ubuntu.18.04-x64-netcoreapp3.1
 
 # install necessary tooling for jq installation
 RUN apt-get update && \
