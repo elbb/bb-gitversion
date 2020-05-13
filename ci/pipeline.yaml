@@ -15,7 +15,7 @@ resources:
       repository: elbb/bb-gitversion
       tag: ((bb-gitversion-version))
 
-  - name: S3-gitversion
+  - name: s3-gitversion
     type: s3
     source:
       bucket: ((name))

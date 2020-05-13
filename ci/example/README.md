@@ -90,6 +90,7 @@ The example builds the docker image with the Dockerfile located in `docker/Docke
 ## Using the pipeline
 
 Use `fly` to setup the pipeline with concourse CI.
+Before setting the pipeline you might login first to your concourse instance `fly -t <target> login --concourse-url http://<concourse>:<port>`. See the [fly documentation](https://concourse-ci.org/fly.html) for more help.
 
 Once you've setup your concourse CI server (either hosted or local) upload the pipeline:
 
