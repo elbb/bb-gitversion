@@ -26,6 +26,12 @@ resources:
       secret_access_key: ((s3_secret_key))
       disable_ssl: ((s3_disable_ssl))
 
+  - name: aws-cli
+    type: docker-image
+    source:
+      repository: amazon/aws-cli
+      tag: latest
+
 jobs:
   - name: Generate gitversion and put it on S3
     public: true
@@ -33,6 +39,7 @@ jobs:
       - in_parallel:
           - get: bb-gitversion
           - get: source
+          - get: aws-cli
       - task: Generate version
         image: bb-gitversion
         config:
@@ -52,6 +59,26 @@ jobs:
           params:
             GIT_PATH: source
             GEN_PATH: gen
+      - task: Check/Create bucket for ((name)) on S3
+        image: aws-cli
+        config:
+          platform: linux
+          run:
+            path: /bin/sh
+            args:
+              - -xc
+              - |
+                mkdir -p ~/.aws
+                # hide setting credentials in plain text in concourse ui
+                set +x
+                export TERM="xterm-256color"
+                echo "[default]" > ~/.aws/credentials
+                echo "aws_access_key_id=((s3_access_key))" >> ~/.aws/credentials
+                echo "aws_secret_access_key=((s3_secret_key))" >> ~/.aws/credentials
+                set -x
+                # check if bucket exists on s3 endpoint. If not create one
+                aws --endpoint-url ((s3_endpoint)) s3api head-bucket --bucket ((name)) 2> /dev/null
+                if [ $? != 0 ]; then aws s3 mb s3://((name)) --endpoint-url ((s3_endpoint)); fi
       - put: s3-gitversion
         params:
           file: gen/gitversion.tar.gz
