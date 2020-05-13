@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/elbb/bb-buildingblock/master/.assets/logo.png" height="200">
 
-# General usage
+# Concourse pipeline integration guide
 
 For using this concourse CI popeline it is recommended to have two config files:
 
