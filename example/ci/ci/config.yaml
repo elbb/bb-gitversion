@@ -1,18 +1,23 @@
 ---
-# General stuff
-# -------------
-## Specifies the name of the buildingblock
-name: bb-example
+# Building block relevant stuff
+# -----------------------------
+## Specifies the name of the building block
+bb_name: bb-example
 ## Specifies the destination of the docker image artifact
-destination: elbb/bb-example
+bb_destination: elbb/bb-example
+## Specifies insecure docker registries, format "host:port" or "ip:port"
+bb_destination_insecure_registries: []
+
+# Versioning stuff
+# ----------------
 ## Specifies the version used for bb-gitversion
-bb-gitversion-version: 0.2.0
+bb_gitversion_version: 0.3.0
 
 # Git relevant stuff
 # ------------------
 ## Specify the git repository to work with
 git_source: https://github.com/elbb/bb-example
-## Specify the branch to work with
+## Specify the git branch to work with
 git_branch: master
 ## This enables/disables ssl verification of the git resource
 git_skip_ssl_verification: false
@@ -22,4 +27,4 @@ git_skip_ssl_verification: false
 ## Specify the S3 endpoint URI
 s3_endpoint: http://172.17.0.1:9000
 ## This enables/disables the ssl verification for the S3 endpoint
-s3_disable_ssl: true
+s3_skip_ssl_verification: true

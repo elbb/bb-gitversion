@@ -1,12 +1,14 @@
 ---
-# Building block relevant stuff
-# -----------------------------
+# General stuff
+# -------------
 ## Specifies the name of the building block
-bb_name: bb-buildingblock
+bb_name: bb-example
 ## Specifies the destination of the docker image artifact
-bb_destination: elbb/bb-buildingblock
+# Using docker hosts ip address for local environment
+bb_destination: 172.17.0.1:5000/elbb/bb-example
 ## Specifies insecure docker registries, format "host:port" or "ip:port"
-bb_destination_insecure_registries: []
+# Using docker hosts ip address for local environment
+bb_destination_insecure_registries: ["172.17.0.1:5000"]
 
 # Versioning stuff
 # ----------------
@@ -16,9 +18,9 @@ bb_gitversion_version: 0.3.0
 # Git relevant stuff
 # ------------------
 ## Specify the git repository to work with
-git_source: https://github.com/elbb/bb-buildingblock.git
+git_source: https://github.com/elbb/bb-example.git
 ## Specify the git branch to work with
-git_branch: master
+git_branch: example
 ## This enables/disables ssl verification of the git resource
 git_skip_ssl_verification: false
 
@@ -28,4 +30,4 @@ git_skip_ssl_verification: false
 # Using docker hosts ip address for local environment when using min.io locally
 s3_endpoint: http://172.17.0.1:9000
 ## This enables/disables the ssl verification for the S3 endpoint
-s3_skip_ssl_verification: false
+s3_skip_ssl_verification: true
