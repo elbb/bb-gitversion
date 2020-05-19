@@ -107,6 +107,7 @@ If you want your image to be tagged as `latest` keep the value at `true`, otherw
           - in_parallel:
               - get: source
               - get: s3-gitversion
+                trigger: true
                 params:
                   unpack: true
           - put: image-((bb_name))

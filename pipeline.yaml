@@ -64,6 +64,8 @@ jobs:
         image: aws-cli
         config:
           platform: linux
+          inputs:
+            - name: gen
           run:
             path: /bin/bash
             args:
@@ -80,7 +82,7 @@ jobs:
                 # check if bucket exists on s3 endpoint. If not create one
                 version=$(cat gen/plain/SemVer)
                 aws --endpoint-url ((s3_endpoint)) s3api head-bucket --bucket ((bb_name))-${version} 2> /dev/null
-                if [ $? != 0 ]; then aws s3 mb s3://(bb_name))-${version} --endpoint-url ((s3_endpoint)); fi
+                if [ $? != 0 ]; then aws s3 mb s3://((bb_name))-${version} --endpoint-url ((s3_endpoint)); fi
       - put: s3-gitversion
         params:
           file: gen/gitversion.tar.gz
