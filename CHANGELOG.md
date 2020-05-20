@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   concourse environment for ci/cd builds
 
+## [0.3.0] - 2020-05-19
+
+### Added
+
+-   allowed versioning of all branch names
+
 ## [0.2.0] - 2020-05-13
 
 ### Added
