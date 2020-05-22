@@ -9,7 +9,7 @@ resources:
       # This enables triggering on tag changes that match the glob pattern
       # tag_filter: "*.*.*"
 
-  - name: image-bb-gitversion
+  - name: image-bb-gitversion-tool
     type: docker-image
     source:
       repository: elbb/bb-gitversion
@@ -37,12 +37,12 @@ jobs:
     public: true
     plan:
       - in_parallel:
-          - get: image-bb-gitversion
+          - get: image-bb-gitversion-tool
           - get: source
             trigger: true
           - get: image-aws-cli
       - task: Generate version
-        image: image-bb-gitversion
+        image: image-bb-gitversion-tool
         config:
           platform: linux
           inputs:
@@ -62,6 +62,7 @@ jobs:
                 else 
                   cat gen/plain/InformationalVersion > gen/version
                 fi &&
+                sed 's/+/-/g' gen/version > gen/version &&
                 version=$(cat gen/version) &&
                 tar cvfz gen/gitversion-${version}.tar.gz gen/*
           params:

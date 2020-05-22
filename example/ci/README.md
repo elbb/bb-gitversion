@@ -67,7 +67,7 @@ Note 3: If you are running the local docker registry, you might add this to the 
 
 **Note: Make sure that you have set up ssh access with your ssh-key in your git repository.**
 
-Fill in your ssh private key and your S3 credentials in `credentials.example.yaml` and rename it to `credentials.yaml`.
+Fill in your ssh private key and your credentials for the docker registry and S3 server in `credentials.example.yaml` and rename it to `credentials.yaml`.
 
 ### pipeline.yaml
 
@@ -97,7 +97,10 @@ If you want your image to be tagged as `latest` keep the value at `true`, otherw
         type: docker-image
         source:
           repository: ((bb_destination))
+          username: ((registry_user))
+          password: ((registry_password))
           tag: latest
+          insecure_registries: ((bb_destination_insecure_registries))
     ...
     jobs:
     ...
@@ -114,10 +117,10 @@ If you want your image to be tagged as `latest` keep the value at `true`, otherw
             params:
               build: source/docker
               dockerfile: source/docker/Dockerfile
-              additional_tags: s3-gitversion/plain/SemVer
+              additional_tags: s3-gitversion/version
               tag_as_latest: true
 
-Note: If the S3 bucket does not exist, it will be created with the generated version as suffix `<bb_name>-<SemVer>` e.g. `bb-example-0.1.0`.
+Note: If the S3 bucket for the specific building block does not exist, it will be created. The files that are stored within that bucket contain various versioning information. The name is suffixed with the Version: `gitversion-<Version>.tar.gz` where `<Version>` can be the FullSemVer for `master` branche (e.g. `bb-example-0.1.0`) and InformationalVersion for every `other branches` (e.g. `0.1.0+Branch.origin-example-branch.Sha.f48c55b4dea2b666574f03f34e02001123f7993a`).
 
 ## Using the pipeline
 
