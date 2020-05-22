@@ -25,6 +25,6 @@ git_skip_ssl_verification: false
 # S3 relevant stuff
 # -----------------
 ## Specify the S3 endpoint URI
-s3_endpoint: http://172.17.0.1:9000
+s3_endpoint: http://minio:9000
 ## This enables/disables the ssl verification for the S3 endpoint
 s3_skip_ssl_verification: true

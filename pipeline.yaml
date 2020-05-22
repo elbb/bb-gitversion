@@ -7,9 +7,9 @@ resources:
       branch: ((git_branch))
       skip_ssl_verification: ((git_skip_ssl_verification))
       # This enables triggering on tag changes that match the glob pattern
-      # tag_filter: "*"
+      # tag_filter: "*.*.*"
 
-  - name: bb-gitversion
+  - name: image-bb-gitversion
     type: docker-image
     source:
       repository: elbb/bb-gitversion
@@ -26,7 +26,7 @@ resources:
       secret_access_key: ((s3_secret_key))
       disable_ssl: ((s3_skip_ssl_verification))
 
-  - name: aws-cli
+  - name: image-aws-cli
     type: docker-image
     source:
       repository: amazon/aws-cli
@@ -37,11 +37,12 @@ jobs:
     public: true
     plan:
       - in_parallel:
-          - get: bb-gitversion
+          - get: image-bb-gitversion
           - get: source
-          - get: aws-cli
+            trigger: true
+          - get: image-aws-cli
       - task: Generate version
-        image: bb-gitversion
+        image: image-bb-gitversion
         config:
           platform: linux
           inputs:
@@ -56,13 +57,18 @@ jobs:
                 entrypoint.sh && 
                 jq empty gen/json/gitversion.json &&
                 cat gen/json/gitversion.json && 
-                version=$(cat gen/plain/SemVer) &&
+                if [ "((git_branch))" == "master" ]; then 
+                  cat gen/plain/SemVer > gen/version
+                else 
+                  cat gen/plain/InformationalVersion > gen/version
+                fi &&
+                version=$(cat gen/version) &&
                 tar cvfz gen/gitversion-${version}.tar.gz gen/*
           params:
             GIT_PATH: source
             GEN_PATH: gen
       - task: Check/Create bucket for ((bb_name)) on S3
-        image: aws-cli
+        image: image-aws-cli
         config:
           platform: linux
           run:

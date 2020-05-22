@@ -31,15 +31,15 @@ Note 2: If you are using e.g. dockerhub as destination, you can specify `bb_dest
 Note 3: If you are running the local docker registry, you might add this to the `bb_destination_insecure_registries` section. If you are using e.g. dockerhub or another ssl featured registry you can leave the brackets empty. e.g. `bb_destination_insecure_registries: []`.
 
     ---
-    # Building block relevant stuff
-    # -----------------------------
+    # General stuff
+    # -------------
     ## Specifies the name of the building block
     bb_name: bb-example
     ## Specifies the destination of the docker image artifact
-    # using docker host ip address for local testing, 
-    bb_destination: 172.17.0.1:5000/elbb/bb-example
+    # Using local environment for docker registry
+    bb_destination: registry:5000/elbb/bb-example
     ## Specifies insecure docker registries, format "host:port" or "ip:port"
-    bb_destination_insecure_registries: ["172.17.0.1:5000"]
+    bb_destination_insecure_registries: ["registry:5000"]
 
     # Versioning stuff
     # ----------------
@@ -49,17 +49,17 @@ Note 3: If you are running the local docker registry, you might add this to the 
     # Git relevant stuff
     # ------------------
     ## Specify the git repository to work with
-    git_source: https://github.com/elbb/bb-example
-    ## Specify the branch to work with
-    git_branch: master
+    git_source: https://github.com/elbb/bb-example.git
+    ## Specify the git branch to work with
+    git_branch: example
     ## This enables/disables ssl verification of the git resource
     git_skip_ssl_verification: false
 
     # S3 relevant stuff
     # -----------------
     ## Specify the S3 endpoint URI
-    # using docker host ip address for local testing
-    s3_endpoint: http://172.17.0.1:9000
+    # Using local environment for min.io
+    s3_endpoint: http://minio:9000
     ## This enables/disables the ssl verification for the S3 endpoint
     s3_skip_ssl_verification: true
 
@@ -130,3 +130,7 @@ Once you've setup your concourse CI server (either hosted or local) upload the p
     $ fly -t <target> set-pipeline -n -p bb-example -l ci/config.yaml -l ci/credentials.yaml -c pipeline.yaml
 
 If your build succeeds, overwrite the the `pipeline.yaml` and `ci/` with your modified pipeline from `example/ci`. You are free to remove `example/ci`.
+
+```
+
+```
