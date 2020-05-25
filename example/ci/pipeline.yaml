@@ -21,7 +21,7 @@ resources:
       bucket: ((bb_name))
       endpoint: ((s3_endpoint))
       # at least one regex capture group is needed here
-      regexp: version/gitversion-(.*).tar.gz
+      regexp: gitversion/gitversion-(.*).tar.gz
       access_key_id: ((s3_access_key))
       secret_access_key: ((s3_secret_key))
       disable_ssl: ((s3_skip_ssl_verification))
@@ -57,26 +57,26 @@ jobs:
           inputs:
             - name: source
           outputs:
-            - name: gen
+            - name: gitversion
           run:
             path: /bin/bash
             args:
               - -exc
               - |
                 entrypoint.sh && 
-                jq empty gen/json/gitversion.json &&
-                cat gen/json/gitversion.json && 
+                jq empty gitversion/json/gitversion.json &&
+                cat gitversion/json/gitversion.json && 
                 if [ "((git_branch))" == "master" ]; then 
-                  cat gen/plain/SemVer > gen/version
+                  cat gitversion/plain/SemVer > gitversion/version
                 else 
-                  cat gen/plain/InformationalVersion > gen/version
+                  cat gitversion/plain/InformationalVersion > gitversion/version
                 fi &&
-                sed 's/+/-/g' gen/version > gen/version &&
-                version=$(cat gen/version) &&
-                tar cvfz gen/gitversion-${version}.tar.gz gen/*
+                sed -i 's/+/-/g' gitversion/version &&
+                version=$(cat gitversion/version) &&
+                tar cvfz gitversion/gitversion-${version}.tar.gz gitversion/*
           params:
             GIT_PATH: source
-            GEN_PATH: gen
+            GEN_PATH: gitversion
       - task: Check/Create bucket for ((bb_name)) on S3
         image: image-aws-cli
         config:
@@ -99,7 +99,7 @@ jobs:
                 if [ $? != 0 ]; then aws s3 mb s3://((bb_name)) --endpoint-url ((s3_endpoint)); fi
       - put: s3-gitversion
         params:
-          file: gen/gitversion-*.tar.gz
+          file: gitversion/gitversion-*.tar.gz
           acl: public-read
 
   - name: Create docker image for ((bb_name)) and push it
