@@ -32,6 +32,15 @@ resources:
       repository: amazon/aws-cli
       tag: latest
 
+  - name: image-((bb_name))
+    type: docker-image
+    source:
+      repository: ((bb_destination))
+      username: ((registry_user))
+      password: ((registry_password))
+      tag: latest
+      insecure_registries: ((bb_destination_insecure_registries))
+
 jobs:
   - name: Generate gitversion and put it on S3
     public: true
@@ -92,3 +101,18 @@ jobs:
         params:
           file: gitversion/gitversion-*.tar.gz
           acl: public-read
+
+  - name: Create docker image for ((bb_name)) and push it
+    public: true
+    plan:
+      - in_parallel:
+          - get: source
+          - get: s3-gitversion
+            trigger: true
+            params:
+              unpack: true
+      - put: image-((bb_name))
+        params:
+          build: source/gitversion
+          dockerfile: source/gitversion/Dockerfile
+          additional_tags: s3-gitversion/version

@@ -2,9 +2,9 @@
 # Building block relevant stuff
 # -----------------------------
 ## Specifies the name of the building block
-bb_name: bb-buildingblock
+bb_name: bb-gitversion
 ## Specifies the destination of the docker image artifact
-bb_destination: elbb/bb-buildingblock
+bb_destination: elbb/bb-gitversion
 ## Specifies insecure docker registries, format "host:port" or "ip:port"
 bb_destination_insecure_registries: []
 
@@ -16,7 +16,7 @@ bb_gitversion_version: 0.3.0
 # Git relevant stuff
 # ------------------
 ## Specify the git repository to work with
-git_source: https://github.com/elbb/bb-buildingblock.git
+git_source: https://github.com/elbb/bb-gitversion.git
 ## Specify the git branch to work with
 git_branch: master
 ## This enables/disables ssl verification of the git resource
