@@ -1,0 +1,118 @@
+resources:
+  - name: source
+    type: git
+    source:
+      uri: ((git_source))
+      private_key: ((privatekey))
+      branch: ((git_branch))
+      skip_ssl_verification: ((git_skip_ssl_verification))
+      # This enables triggering on tag changes that match the glob pattern
+      # tag_filter: "*.*.*"
+
+  - name: image-bb-gitversion-tool
+    type: docker-image
+    source:
+      repository: elbb/bb-gitversion
+      tag: ((bb_gitversion_version))
+
+  - name: s3-gitversion
+    type: s3
+    source:
+      bucket: ((bb_name))
+      endpoint: ((s3_endpoint))
+      # at least one regex capture group is needed here
+      regexp: gitversion/gitversion-(.*).tar.gz
+      access_key_id: ((s3_access_key))
+      secret_access_key: ((s3_secret_key))
+      disable_ssl: ((s3_skip_ssl_verification))
+
+  - name: image-aws-cli
+    type: docker-image
+    source:
+      repository: amazon/aws-cli
+      tag: latest
+
+  - name: image-((bb_name))
+    type: docker-image
+    source:
+      repository: ((bb_destination))
+      username: ((registry_user))
+      password: ((registry_password))
+      tag: latest
+      insecure_registries: ((bb_destination_insecure_registries))
+
+jobs:
+  - name: Generate gitversion and put it on S3
+    public: true
+    plan:
+      - in_parallel:
+          - get: image-bb-gitversion-tool
+          - get: source
+            trigger: true
+          - get: image-aws-cli
+      - task: Generate version
+        image: image-bb-gitversion-tool
+        config:
+          platform: linux
+          inputs:
+            - name: source
+          outputs:
+            - name: gitversion
+          run:
+            path: /bin/bash
+            args:
+              - -exc
+              - |
+                entrypoint.sh && 
+                jq empty gitversion/json/gitversion.json &&
+                cat gitversion/json/gitversion.json && 
+                if [ "((git_branch))" == "master" ]; then 
+                  cat gitversion/plain/SemVer > gitversion/version
+                else 
+                  cat gitversion/plain/InformationalVersion > gitversion/version
+                fi &&
+                sed -i 's/+/-/g' gitversion/version &&
+                version=$(cat gitversion/version) &&
+                tar cvfz gitversion/gitversion-${version}.tar.gz gitversion/*
+          params:
+            GIT_PATH: source
+            GEN_PATH: gitversion
+      - task: Check/Create bucket for ((bb_name)) on S3
+        image: image-aws-cli
+        config:
+          platform: linux
+          run:
+            path: /bin/bash
+            args:
+              - -xc
+              - |
+                mkdir -p ~/.aws
+                # hide setting credentials in plain text in concourse ui
+                set +x
+                export TERM="xterm-256color"
+                echo "[default]" > ~/.aws/credentials
+                echo "aws_access_key_id=((s3_access_key))" >> ~/.aws/credentials
+                echo "aws_secret_access_key=((s3_secret_key))" >> ~/.aws/credentials
+                set -x
+                # check if bucket exists on s3 endpoint. If not create one
+                aws --endpoint-url ((s3_endpoint)) s3api head-bucket --bucket ((bb_name)) 2> /dev/null
+                if [ $? != 0 ]; then aws s3 mb s3://((bb_name)) --endpoint-url ((s3_endpoint)); fi
+      - put: s3-gitversion
+        params:
+          file: gitversion/gitversion-*.tar.gz
+          acl: public-read
+
+  - name: Create docker image for ((bb_name)) and push it
+    public: true
+    plan:
+      - in_parallel:
+          - get: source
+          - get: s3-gitversion
+            trigger: true
+            params:
+              unpack: true
+      - put: image-((bb_name))
+        params:
+          build: source/docker
+          dockerfile: source/docker/Dockerfile
+          additional_tags: s3-gitversion/version
