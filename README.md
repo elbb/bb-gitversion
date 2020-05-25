@@ -37,7 +37,7 @@ Upload the pipeline file with fly:
 
 After successfully uploading the pipeline to concourse CI login and unpause it. After that the pipeline should be triggered by new commits on the master branch (or new tags if enabled in `pipeline.yaml`).
 
-See the [integration documentation](ci/example/README.md) on how to modify the `pipeline.yaml` and config files for your building block.
+See the [integration documentation](example/ci/README.md) on how to modify the `pipeline.yaml` and config files for your building block.
 
 # What is embedded linux building blocks
 

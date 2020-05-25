@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- concourse environment for ci/cd builds
+## [0.2.0] - 2020-05-25
+
+Default concourse CI environment for CI/CD builds
+
+### Added
+
+-   default concourse CI pipeline
 
 ## [0.1.0] - 2020-03-29
 
@@ -15,7 +21,7 @@ Initial Version
 
 ### Added
 
-- dobi environment template for local builds
-- license informations (MIT and Apache V 2.0)
-- changelog template
-- automated versioning (using elbb/bb-gitversion)
+-   dobi environment template for local builds
+-   license informations (MIT and Apache V 2.0)
+-   changelog template
+-   automated versioning (using elbb/bb-gitversion)
