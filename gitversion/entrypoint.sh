@@ -34,6 +34,9 @@ JSON_DIR=${GEN}/json
 mkdir -p ${JSON_DIR}
 /tools/dotnet-gitversion ${GIT} /config /tools/GitVersion.yaml > ${JSON_DIR}/gitversion.json
 
+# replace '+' with '-' in version strings due to incompabilities for e.g. docker
+sed -i 's/+/-/g' ${JSON_DIR}/gitversion.json
+
 ###### generate env file ######
 
 # create or clear file
@@ -56,6 +59,23 @@ for s in $(cat ${JSON_DIR}/gitversion.json | jq -r keys[] ); do
   > ${PLAIN_DIR}/${s}
   echo $(cat ${JSON_DIR}/gitversion.json | jq -r .${s} ) >> ${PLAIN_DIR}/${s}
 done
+
+###### generate docker version files ######
+TAG_DIR=${GEN}/branch
+mkdir -p ${TAG_DIR}
+mkdir -p ${TAG_DIR}/env
+mkdir -p ${TAG_DIR}/plain
+head=$(cat ${GIT}/.git/HEAD)
+gitbranch=${head#"ref: refs/heads/"}
+for s in $(cat ${JSON_DIR}/gitversion.json | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
+  if [ "gitbranch" == "master" ]; then
+      targetVersion="FullSemVer"
+  else
+      targetVersion="InformationalVersion"
+  fi
+done
+echo "export GitVersionDocker=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion_docker.env
+echo $(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion} ) > ${TAG_DIR}/plain/version
 
 # change ownership to local user
 chown -R user:user ${GEN}
