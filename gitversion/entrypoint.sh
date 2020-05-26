@@ -74,7 +74,7 @@ for s in $(cat ${JSON_DIR}/gitversion.json | jq -r "to_entries|map(\"\(.key)=\(.
       targetVersion="InformationalVersion"
   fi
 done
-echo "export GitVersionDocker=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion_docker.env
+echo "export GitVersionDocker=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion.env
 echo $(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion} ) > ${TAG_DIR}/plain/version
 
 # change ownership to local user
