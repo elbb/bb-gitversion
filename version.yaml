@@ -18,7 +18,7 @@ mount=mount-gitversion-gen-dir:
 
 image=image-bb-gitversion:
   image: elbb/bb-gitversion
-  tags: ["0.3.0"]
+  tags: ["0.4.0"]
   pull: once
 
 # ===================================================

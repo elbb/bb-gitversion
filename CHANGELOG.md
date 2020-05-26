@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   concourse environment for ci/cd builds
 
+## [0.4.0] - 2020-05-26
+
+### Added
+
+-   replaced '+' characters with '-' for greater compability e.g. docker tags
+-   introduced branch specific version files e.g. 
+    master branch gets `FullSemVer`, any other branches get `InformationalVersion`
+
 ## [0.3.0] - 2020-05-19
 
 ### Added
