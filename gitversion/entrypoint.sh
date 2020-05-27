@@ -70,7 +70,7 @@ if [ "$(cat ${JSON_DIR}/gitversion.json | jq -r .BranchName)" == "master" ]; the
 else
     targetVersion="InformationalVersion"
 fi
-echo "export GitVersionDocker=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion.env
+echo "export GitVersionBranch=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion.env
 echo $(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion} ) > ${TAG_DIR}/plain/version
 
 # change ownership to local user
