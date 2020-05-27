@@ -44,7 +44,7 @@ Note 3: If you are running the local docker registry, you might add this to the 
     # Versioning stuff
     # ----------------
     ## Specifies the version used for bb-gitversion
-    bb_gitversion_version: 0.3.0
+    bb_gitversion_version: 0.4.2
 
     # Git relevant stuff
     # ------------------
@@ -120,7 +120,7 @@ If you want your image to be tagged as `latest` keep the value at `true`, otherw
               additional_tags: s3-gitversion/version
               tag_as_latest: true
 
-Note: If the S3 bucket for the specific building block does not exist, it will be created. The files that are stored within that bucket contain various versioning information. The name is suffixed with the Version: `gitversion-<Version>.tar.gz` where `<Version>` can be the FullSemVer for `master` branche (e.g. `bb-example-0.1.0`) and InformationalVersion for every `other branches` (e.g. `0.1.0+Branch.origin-example-branch.Sha.f48c55b4dea2b666574f03f34e02001123f7993a`).
+Note: If the S3 bucket for the specific building block does not exist, it will be created. The files that are stored within that bucket contain various versioning information. The name is suffixed with the Version: `gitversion-<Version>.tar.gz` where `<Version>` is a full semantic version for `master` branch (e.g. `bb-example-0.1.0`) and has additional informations for every `other branch` (e.g. `0.1.0-Branch.origin-example-branch.Sha.f48c55b4dea2b666574f03f34e02001123f7993a`).
 
 ## Using the pipeline
 
