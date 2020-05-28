@@ -65,16 +65,12 @@ TAG_DIR=${GEN}/branch
 mkdir -p ${TAG_DIR}
 mkdir -p ${TAG_DIR}/env
 mkdir -p ${TAG_DIR}/plain
-head=$(cat ${GIT}/.git/HEAD)
-gitbranch=${head#"ref: refs/heads/"}
-for s in $(cat ${JSON_DIR}/gitversion.json | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
-  if [ "${gitbranch}" == "master" ]; then
-      targetVersion="FullSemVer"
-  else
-      targetVersion="InformationalVersion"
-  fi
-done
-echo "export GitVersionDocker=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion.env
+if [ "$(cat ${JSON_DIR}/gitversion.json | jq -r .BranchName)" == "master" ]; then
+    targetVersion="FullSemVer"
+else
+    targetVersion="InformationalVersion"
+fi
+echo "export GitVersionBranch=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion.env
 echo $(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion} ) > ${TAG_DIR}/plain/version
 
 # change ownership to local user
