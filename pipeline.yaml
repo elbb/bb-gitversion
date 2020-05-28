@@ -56,15 +56,9 @@ jobs:
               - |
                 entrypoint.sh && 
                 jq empty gitversion/json/gitversion.json &&
-                cat gitversion/json/gitversion.json && 
-                if [ "((git_branch))" == "master" ]; then 
-                  cat gitversion/plain/SemVer > gitversion/version
-                else 
-                  cat gitversion/plain/InformationalVersion > gitversion/version
-                fi &&
-                sed -i 's/+/-/g' gitversion/version &&
-                version=$(cat gitversion/version) &&
-                tar cvfz gitversion/gitversion-${version}.tar.gz gitversion/*
+                cat gitversion/json/gitversion.json &&
+                cp gitversion/branch/plain/version gitversion/version &&
+                tar cvfz gitversion/gitversion-$(cat gitversion/version).tar.gz gitversion/*
           params:
             GIT_PATH: source
             GEN_PATH: gitversion

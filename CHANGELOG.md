@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2020-05-28
+
+-   adapt pipeline for bb-gitversion fixes (bb-gitversion#9)
+-   added 'passed' marker of gitversion creation in concourse pipeline in example #20
+
 ## [0.2.0] - 2020-05-25
 
-Default concourse CI environment for CI/CD builds
+-   default concourse CI environment for CI/CD builds
 
 ### Added
 
