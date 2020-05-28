@@ -108,6 +108,7 @@ jobs:
       - in_parallel:
           - get: source
           - get: s3-gitversion
+            passed: [Generate gitversion and put it on S3]
             trigger: true
             params:
               unpack: true
