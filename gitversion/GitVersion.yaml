@@ -29,7 +29,7 @@ branches:
   feature:
     mode: ContinuousDelivery
     tag: useBranchName
-    increment: Patch
+    increment: None
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
     regex: ^((?!master).)*$
