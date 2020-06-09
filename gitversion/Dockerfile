@@ -2,7 +2,7 @@ FROM gittools/gitversion:5.1.4-linux-ubuntu-18.04-netcoreapp3.1
 
 # install necessary tooling for jq installation
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget gpg gnupg-agent python-jinja2 python-sh && \
+    apt-get install -y --no-install-recommends wget gpg gnupg-agent python-jinja2 && \
     rm -rf /var/lib/apt/lists/*
 
 ENV JQ_VERSION='1.5'
