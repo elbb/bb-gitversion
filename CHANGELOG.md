@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2020.Q2
+
+-   don't use build dependencies which are tagged "latest" in pipeline and ci examples as well
+-   version bump of dependency bb-gitversion
+
 ## [0.2.1] - 2020-05-28
 
 -   adapt pipeline for bb-gitversion fixes (bb-gitversion#9)
