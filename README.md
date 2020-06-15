@@ -4,6 +4,12 @@
 
 This code serves as a template for the creation of further building blocks with the purpose of giving all blocks a uniform structure and usage.
 
+## Prerequisites
+
+Install the following prereuisites:
+-   [docker](https://docs.docker.com/install/)
+-   [dobi](https://github.com/dnephin/dobi)
+
 ## Using dobi for local build
 
 dobi should only be used via the `dobi.sh` script, because there important variables are set and the right scripts are included.
