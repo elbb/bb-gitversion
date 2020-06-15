@@ -3,14 +3,15 @@
 from jinja2 import Environment, FileSystemLoader
 from collections import OrderedDict 
 import json
+import sys
 
-file_loader = FileSystemLoader('template')
+file_loader = FileSystemLoader(sys.argv[1])
 env = Environment(trim_blocks=True, lstrip_blocks=True, loader=file_loader) 
 
-template = env.get_template('template_version.h')
+template = env.get_template(sys.argv[2])
 
 # read file
-with open('/gen/json/gitversion.json', 'r') as file:
+with open(sys.argv[3], 'r') as file:
     data=file.read()
 
 # Closing file 
@@ -19,13 +20,5 @@ file.close()
 # returns JSON object as a dictionary 
 dict = json.loads(data) 
 
-# if you would like to delete empty version elements, use this peace of code
-# empty_keys = [k for k,v in dict.iteritems() if len(str(v)) is 0]
-# for k in empty_keys:
-#     del dict[k]
-
-# sort dict by key names
-dict_sort = OrderedDict(sorted(dict.items()))
-
 # generate header file 
-template.stream(ver=dict_sort).dump("/gen/cpp/version.h")
+template.stream(ver=dict).dump(sys.argv[4])

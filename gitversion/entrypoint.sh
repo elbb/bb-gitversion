@@ -66,8 +66,14 @@ done
 CPP_DIR=${GEN}/cpp
 mkdir -p ${CPP_DIR}
 
+# control paramaters to generate the cpp header file
+TEMPLATE_DIR=${GIT}/gitversion/templates/cpp
+TEMPLATE_NAME=version.h
+INPUT_FILE=${JSON_DIR}/gitversion.json
+OUTPUT_FILE=${CPP_DIR}/version.h
+
 # generate cpp header file
-/tools/gen_cpp_header/gen_version_header.py
+/tools/gen_cpp_header/gen_version_header.py ${TEMPLATE_DIR} ${TEMPLATE_NAME} ${INPUT_FILE} ${OUTPUT_FILE}
 
 
 ###### generate docker version files ######

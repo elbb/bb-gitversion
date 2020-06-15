@@ -3,7 +3,7 @@
 
 #include <string>
 namespace version { 
-{% for key, value in ver.items() %}
+{% for key, value in ver.items()|sort() %}
 constexpr std::string  {{key}} ("{{value}}");
 {% endfor %}
 }
