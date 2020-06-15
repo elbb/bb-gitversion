@@ -10,6 +10,25 @@ Install the following prereuisites:
 -   [docker](https://docs.docker.com/install/)
 -   [dobi](https://github.com/dnephin/dobi)
 
+## Howto use bb-buildingblock template
+
+Create a new repository and merge bb-buildingblock, e.g.:
+```bash
+git init myrepo
+cd myrepo
+git remote add bb-buildingblock https://github.com/elbb/bb-buildingblock.git
+git fetch -n bb-buildingblock
+git merge bb-buildingblock master
+```
+
+Adapt your own ci/cd pipeline. Use the pipeline from `example/ci` directory and adapt it. E.g.:
+
+```bash
+cp -f example/ci/pipeline.yaml pipeline.yaml
+cp -rf example/ci/ci/* ci/
+```
+Follow "[Using concourse CI for a CI/CD build](#using-concourse-ci-for-a-cicd-build)" to adapt your pipeline configuartion.
+
 ## Using dobi for local build
 
 dobi should only be used via the `dobi.sh` script, because there important variables are set and the right scripts are included.
