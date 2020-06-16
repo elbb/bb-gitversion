@@ -109,4 +109,4 @@ jobs:
         params:
           build: source/docker
           dockerfile: source/docker/Dockerfile
-          tag: s3-gitversion/version
+          tag_file: s3-gitversion/version
