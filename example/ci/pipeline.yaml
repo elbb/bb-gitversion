@@ -9,6 +9,15 @@ resources:
       # This enables triggering on tag changes that match the glob pattern
       # tag_filter: "*.*.*"
 
+  - name: source-release
+    type: git
+    source:
+      uri: ((git_source))
+      private_key: ((privatekey))
+      branch: ((git_release_branch))
+      skip_ssl_verification: ((git_skip_ssl_verification))
+      tag_filter: "*.*.*"
+
   - name: image-bb-gitversion-tool
     type: docker-image
     source:
@@ -109,4 +118,17 @@ jobs:
         params:
           build: source/docker
           dockerfile: source/docker/Dockerfile
+          latest: false
           tag_file: s3-gitversion/version
+
+  - name: Create latest tag for docker image for ((bb_name)) and push it
+    public: true
+    plan:
+      - in_parallel:
+          - get: source-release
+            trigger: true
+      - put: image-((bb_name))
+        params:
+          build: source-release/docker
+          dockerfile: source-release/docker/Dockerfile
+          latest: true

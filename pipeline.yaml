@@ -9,6 +9,15 @@ resources:
       # This enables triggering on tag changes that match the glob pattern
       # tag_filter: "*.*.*"
 
+  - name: source-release
+    type: git
+    source:
+      uri: ((git_source))
+      private_key: ((privatekey))
+      branch: ((git_release_branch))
+      skip_ssl_verification: ((git_skip_ssl_verification))
+      tag_filter: "*.*.*"
+
   - name: image-bb-gitversion-tool
     type: docker-image
     source:
