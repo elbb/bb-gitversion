@@ -24,8 +24,12 @@ RUN wget --no-check-certificate https://raw.githubusercontent.com/stedolan/jq/ma
 COPY GitVersion.yaml /tools/GitVersion.yaml
 
 # copy cpp header generation
-COPY  /gen_cpp_header  /tools/gen_cpp_header
+COPY  gen_cpp_header  /tools/gen_cpp_header
 RUN chmod +x /tools/gen_cpp_header/gen_version_header.py
+
+# copy template generation file
+COPY  templates  /tools/templates
+
 
 # copy script for semantic versioning generation
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
