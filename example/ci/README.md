@@ -44,7 +44,7 @@ Note 3: If you are running the local docker registry, you might add this to the 
     # Versioning stuff
     # ----------------
     ## Specifies the version used for bb-gitversion
-    bb_gitversion_version: 0.5.0
+    bb_gitversion_version: 0.5.1
 
     # Git relevant stuff
     # ------------------
