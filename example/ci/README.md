@@ -110,7 +110,6 @@ The pipeline can create two resulting docker images:
           repository: ((bb_destination))
           username: ((registry_user))
           password: ((registry_password))
-          tag: latest
           insecure_registries: ((bb_destination_insecure_registries))
     ...
     jobs:
@@ -130,7 +129,7 @@ The pipeline can create two resulting docker images:
               build: source/docker
               dockerfile: source/docker/Dockerfile
               latest: false
-              additional_tags: s3-gitversion/version
+              tag_file: s3-gitversion/version
 
       - name: Create latest tag for docker image for ((bb_name)) and push it
         public: true
