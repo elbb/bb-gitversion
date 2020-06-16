@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2020.Q2
+
+-   `latest` tags for docker images only for release branch when new tag is created `(*.*.*)`
+
 ## [0.2.2] - 2020.Q2
 
 -   don't use build dependencies which are tagged "latest" in pipeline and ci examples as well
