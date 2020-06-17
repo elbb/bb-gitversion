@@ -30,7 +30,6 @@ RUN chmod +x /tools/gen_cpp_header/gen_version_header.py
 # copy template generation file
 COPY  templates  /tools/templates
 
-
 # copy script for semantic versioning generation
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
