@@ -2,7 +2,9 @@
 
 # Concourse pipeline integration guide
 
-**Before continue reading please make sure that you don't use the `pipeline.yaml` as a base to work on. Instead use the `example/ci/pipeline.yaml` as base file for your integration.**
+**Before continue reading please make sure that you copied the example pipeline to its final destination.**
+
+    $ cp -r example/ci/* .
 
 For using this concourse CI pipeline it is recommended to have two config files:
 
@@ -156,7 +158,3 @@ Once you've setup your concourse CI server (either hosted or local) upload the p
     $ fly -t <target> set-pipeline -n -p bb-example -l ci/config.yaml -l ci/credentials.yaml -c pipeline.yaml
 
 If your build succeeds, overwrite the the `pipeline.yaml` and `ci/` with your modified pipeline from `example/ci`. You are free to remove `example/ci`.
-
-```
-
-```
