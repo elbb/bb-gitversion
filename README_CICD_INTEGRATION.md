@@ -98,7 +98,7 @@ There you need to modify these sections
 
 The pipeline can create two resulting docker images:
 
-1.  For your specified target branch with versioning information, either with tag `FullSemVer` for `master` or `InformationalVersion` for every other branch. 
+1.  For your specified target branch with versioning information, either with tag `FullSemVer` for `master` or `InformationalVersion` for every other branch (see <https://gitversion.net/docs/more-info/variables> for further information on SemVer)
 
 2.  For your specified release branch with tag `latest` 
 
