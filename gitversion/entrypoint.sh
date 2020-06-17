@@ -60,6 +60,21 @@ for s in $(cat ${JSON_DIR}/gitversion.json | jq -r keys[] ); do
   echo $(cat ${JSON_DIR}/gitversion.json | jq -r .${s} ) >> ${PLAIN_DIR}/${s}
 done
 
+###### generate cpp header file ######
+
+# create folder
+CPP_DIR=${GEN}/cpp
+mkdir -p ${CPP_DIR}
+
+# control paramaters to generate the cpp header file
+TEMPLATE_FILE=/tools/templates/cpp/version.h.j2
+INPUT_FILE=${JSON_DIR}/gitversion.json
+OUTPUT_FILE=${CPP_DIR}/version.h
+
+# generate cpp header file
+/tools/gen_cpp_header/gen_version_header.py ${TEMPLATE_FILE} ${INPUT_FILE} ${OUTPUT_FILE}
+
+
 ###### generate docker version files ######
 TAG_DIR=${GEN}/branch
 mkdir -p ${TAG_DIR}

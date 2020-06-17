@@ -7,6 +7,7 @@ This building block integrates GitVersion ("GitVersion looks at your git history
 -   Output of the version numbers as json file.
 -   Output of the version numbers, divided into plain text files
 -   Output of the version numbers as linux environment file.
+-   Output of the version numbers as c++ header file.
 
 By default, only the default configuration of GitVersion is supported, and thus any GitHub flow-compatible workflow.
 
@@ -69,6 +70,7 @@ After a successful scan the gen directory looks like this:
 
 ```bash
 gen/json/gitversion.json
+gen/cpp/version.h
 gen/env/gitversion.env
 gen/plain/Minor
 gen/plain/BuildMetaDataPadded
