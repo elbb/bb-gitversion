@@ -1,9 +1,11 @@
 #ifndef VERSION_H_
 #define VERSION_H_
 
-namespace version { 
+namespace elbb { 
+namespace version {
 {% for key, value in ver.items()|sort() %}
-constexpr const char *  {{key}} ("{{value}}");
+    constexpr const char *  {{key}} ("{{value}}");
 {% endfor %}
+}
 }
 #endif
