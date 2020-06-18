@@ -69,7 +69,9 @@ mkdir -p ${CPP_DIR}
 # control paramaters to generate the cpp header file
 TEMPLATE_FILE=/tools/templates/cpp/version.h.j2
 INPUT_FILE=${JSON_DIR}/gitversion.json
-OUTPUT_FILE=${CPP_DIR}/version.h
+OUTPUT_DIR=${CPP_DIR}/elbb
+mkdir -p ${OUTPUT_DIR}
+OUTPUT_FILE=${OUTPUT_DIR}/version.h
 
 # generate cpp header file
 /tools/gen_cpp_header/gen_version_header.py ${TEMPLATE_FILE} ${INPUT_FILE} ${OUTPUT_FILE}
