@@ -4,3 +4,8 @@ gen
 
 #dobi build tool
 .dobi
+
+#ci
+ci/credentials.yaml
+ci/config.local.yaml
+example/ci/ci/credentials.yaml

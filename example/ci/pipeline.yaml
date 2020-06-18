@@ -6,8 +6,15 @@ resources:
       private_key: ((privatekey))
       branch: ((git_branch))
       skip_ssl_verification: ((git_skip_ssl_verification))
-      # This enables triggering on tag changes that match the glob pattern
-      # tag_filter: "*.*.*"
+
+  - name: source-release
+    type: git
+    source:
+      uri: ((git_source))
+      private_key: ((privatekey))
+      branch: ((git_release_branch))
+      skip_ssl_verification: ((git_skip_ssl_verification))
+      tag_filter: "*.*.*"
 
   - name: image-bb-gitversion-tool
     type: docker-image
@@ -20,7 +27,6 @@ resources:
     source:
       bucket: ((bb_name))
       endpoint: ((s3_endpoint))
-      # at least one regex capture group is needed here
       regexp: gitversion/gitversion-(.*).tar.gz
       access_key_id: ((s3_access_key))
       secret_access_key: ((s3_secret_key))
@@ -109,4 +115,17 @@ jobs:
         params:
           build: source/docker
           dockerfile: source/docker/Dockerfile
+          latest: false
           tag_file: s3-gitversion/version
+
+  - name: Create latest tag for docker image for ((bb_name)) and push it
+    public: true
+    plan:
+      - in_parallel:
+          - get: source-release
+            trigger: true
+      - put: image-((bb_name))
+        params:
+          build: source-release/docker
+          dockerfile: source-release/docker/Dockerfile
+          latest: true
