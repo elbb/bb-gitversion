@@ -60,6 +60,14 @@ After successfully uploading the pipeline to concourse CI login and unpause it. 
 
 See the [integration documentation](README_CICD_INTEGRATION.md) on how to modify the `pipeline.yaml` and config files for your building block.
 
+## Versioning
+
+This template building block uses [bb-gitversion](https://github.com/elbb/bb-gitversion) to compute the semantic version of itself from the git history.
+
+Using `dobi.sh` the version is updated when necessary and published in environment variables. You can use these environment variables in your dobi targets. 
+See `./gen/gitversion/env/gitversion.env` and `./gen/gitversion/branch/env/gitversion.env` for a detailed list of version environment variables. The later file `./gen/gitversion/branch/env/gitversion.env` includes variables which are formated for `master` and `non-master` branches differently. Currently it includes the variable `GitVersionBranch`. It is identically to `GitVersion_FullSemVer` in case of using the master branch. On all other branches it is identically to `GitVersion_InformationalVersion`.
+
+
 # What is embedded linux building blocks
 
 embedded linux building blocks is a project to create reusable and
