@@ -12,7 +12,7 @@ bb_destination_insecure_registries: ["registry:5000"]
 # Versioning stuff
 # ----------------
 ## Specifies the version used for bb-gitversion
-bb_gitversion_version: 0.6.0
+bb_gitversion_version: 0.6.1
 
 # Git relevant stuff
 # ------------------

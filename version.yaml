@@ -18,7 +18,7 @@ mount=mount-buildingblock-gitversion-gen-dir:
 
 image=image-buildingblock-gitversion:
   image: elbb/bb-gitversion
-  tags: ["0.6.0"]
+  tags: ["0.6.1"]
   pull: once
 
 # ===================================================
