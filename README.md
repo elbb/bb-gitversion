@@ -21,13 +21,9 @@ git fetch -n bb-buildingblock
 git merge bb-buildingblock master
 ```
 
-Adapt your own ci/cd pipeline. Use the pipeline from `example/ci` directory and adapt it. E.g.:
+Follow "[Using dobi for local build](#using-dobi-for-local-build)" to create your `build`, `test` and `deploy` jobs for your local development environment.
 
-```bash
-cp -f example/ci/pipeline.yaml pipeline.yaml
-cp -rf example/ci/ci/* ci/
-```
-Follow "[Using concourse CI for a CI/CD build](#using-concourse-ci-for-a-cicd-build)" to adapt your pipeline configuartion.
+Follow "[Using concourse CI for a CI/CD build](#using-concourse-ci-for-a-cicd-build)" to adapt your CI/CD pipeline configuartion.
 
 ## Using dobi for local build
 
