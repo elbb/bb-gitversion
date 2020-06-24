@@ -45,7 +45,6 @@ else
 fi
 targetVersionInfo=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})
 cat ${JSON_DIR}/gitversion.json | jq --arg value ${targetVersionInfo} '.+{BranchVersion: $value }' > ${JSON_DIR}/gitversion_append.json
-rm ${JSON_DIR}/gitversion.json
 mv ${JSON_DIR}/gitversion_append.json ${JSON_DIR}/gitversion.json
 
 ###### generate env file ######

@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   added branch name to gitversion json file
+-   added branch version to gitversion json file. 
+-   the genenrated files (plain, env and cpp now also contain the branch version)
 
 ## [0.6.1] - 2020.Q2
 
