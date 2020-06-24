@@ -14,7 +14,6 @@ fi
 
 # load generated version infos
 source gen/gitversion/env/gitversion.env
-source gen/gitversion/branch/env/gitversion.env
 
 # execute dobi with meta as default
 exec dobi --filename meta.yaml ${@}

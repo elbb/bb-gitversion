@@ -71,8 +71,7 @@ jobs:
                 entrypoint.sh && 
                 jq empty gitversion/json/gitversion.json &&
                 cat gitversion/json/gitversion.json &&
-                cp gitversion/branch/plain/version gitversion/version &&
-                tar cvfz gitversion/gitversion-$(cat gitversion/version).tar.gz gitversion/*
+                tar cvfz gitversion/gitversion-$(cat gitversion/plain/BranchVersion).tar.gz gitversion/*
           params:
             GIT_PATH: source
             GEN_PATH: gitversion
@@ -116,7 +115,7 @@ jobs:
           build: source/docker
           dockerfile: source/docker/Dockerfile
           latest: false
-          tag_file: s3-gitversion/version
+          tag_file: s3-gitversion/gitversion/plain/BranchVersion
 
   - name: Create latest tag for docker image for ((bb_name)) and push it
     public: true
