@@ -37,6 +37,16 @@ mkdir -p ${JSON_DIR}
 # replace '+' with '-' in version strings due to incompabilities for e.g. docker
 sed -i 's/+/-/g' ${JSON_DIR}/gitversion.json
 
+###### append branch version to json ######
+if [ "$(cat ${JSON_DIR}/gitversion.json | jq -r .BranchName)" == "master" ]; then
+    targetVersion="FullSemVer"
+else
+    targetVersion="InformationalVersion"
+fi
+targetVersionInfo=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})
+cat ${JSON_DIR}/gitversion.json | jq --arg value ${targetVersionInfo} '.+{BranchVersion: $value }' > ${JSON_DIR}/gitversion_append.json
+mv ${JSON_DIR}/gitversion_append.json ${JSON_DIR}/gitversion.json
+
 ###### generate env file ######
 
 # create or clear file
@@ -75,20 +85,6 @@ OUTPUT_FILE=${OUTPUT_DIR}/version.h
 
 # generate cpp header file
 /tools/gen_cpp_header/gen_version_header.py ${TEMPLATE_FILE} ${INPUT_FILE} ${OUTPUT_FILE}
-
-
-###### generate docker version files ######
-TAG_DIR=${GEN}/branch
-mkdir -p ${TAG_DIR}
-mkdir -p ${TAG_DIR}/env
-mkdir -p ${TAG_DIR}/plain
-if [ "$(cat ${JSON_DIR}/gitversion.json | jq -r .BranchName)" == "master" ]; then
-    targetVersion="FullSemVer"
-else
-    targetVersion="InformationalVersion"
-fi
-echo "export GitVersionBranch=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})" > ${TAG_DIR}/env/gitversion.env
-echo $(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion} ) > ${TAG_DIR}/plain/version
 
 # change ownership to local user
 chown -R user:user ${GEN}
