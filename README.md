@@ -107,7 +107,7 @@ Using `dobi.sh` the version is updated when necessary and published in environme
 See `./gen/gitversion/env/gitversion.env` for a detailed list of version environment variables. 
 These key-value pairs are also generated into other representations:
 ```
-./gen/gitversion/cpp/ellb/version.h    #c++ header 
+./gen/gitversion/cpp/elbb/version.h    #c++ header
 ./gen/gitversion/json/gitversion.json  #json reprentation
 ./gen/gitversion/plain/*               #Filename==Key, Content==Value
 ```
