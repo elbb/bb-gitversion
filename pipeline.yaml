@@ -7,15 +7,6 @@ resources:
       branch: ((git_branch))
       skip_ssl_verification: ((git_skip_ssl_verification))
 
-  - name: source-release
-    type: git
-    source:
-      uri: ((git_source))
-      private_key: ((privatekey))
-      branch: ((git_release_branch))
-      skip_ssl_verification: ((git_skip_ssl_verification))
-      tag_filter: "*.*.*"
-
   - name: image-bb-gitversion-tool
     type: docker-image
     source:
@@ -41,10 +32,10 @@ resources:
   - name: image-((bb_name))
     type: docker-image
     source:
-      repository: ((bb_destination))
+      repository: ((bb_docker_namespace))/((bb_name))
       username: ((registry_user))
       password: ((registry_password))
-      insecure_registries: ((bb_destination_insecure_registries))
+      insecure_registries: ((bb_insecure_registries))
 
 jobs:
   - name: Generate gitversion and put it on S3
@@ -68,9 +59,9 @@ jobs:
             args:
               - -exc
               - |
-                entrypoint.sh && 
+                entrypoint.sh &&
                 jq empty gitversion/json/gitversion.json &&
-                cat gitversion/json/gitversion.json && 
+                cat gitversion/json/gitversion.json &&
                 tar cvfz gitversion/gitversion-$(cat gitversion/plain/BranchVersion).tar.gz gitversion/*
           params:
             GIT_PATH: source
@@ -114,18 +105,5 @@ jobs:
         params:
           build: source/gitversion
           dockerfile: source/gitversion/Dockerfile
-          latest: false
+          tag_as_latest: ((bb_release_as_latest))
           tag_file: s3-gitversion/gitversion/plain/BranchVersion
-          
-  - name: Create latest tag for docker image for ((bb_name)) and push it
-    public: true
-    plan:
-      - in_parallel:
-          - get: source-release
-            trigger: true
-      - put: image-((bb_name))
-        params:
-          build: source-release/gitversion
-          dockerfile: source-release/gitversion/Dockerfile
-          latest: true
-    
