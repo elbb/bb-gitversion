@@ -3,14 +3,6 @@
 # ===================================================
 
 image=image-gitversion:
-  image: elbb/bb-gitversion
+  image: "{env.BB_DOCKER_NAMESPACE}/bb-gitversion"
   context: gitversion
   tags: ["{env.GitVersionBranch}"]
-
-# ===================================================
-# alias
-# ===================================================
-
-alias=gitversion-build:
-  tasks:
-    - image-gitversion

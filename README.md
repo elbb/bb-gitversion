@@ -9,9 +9,50 @@ This building block integrates GitVersion ("GitVersion looks at your git history
 -   Output of the version numbers as linux environment file.
 -   Output of the version numbers as c++ header file.
 
-By default, only the default configuration of GitVersion is supported, and thus any GitHub flow-compatible workflow.
-
 For more information, see <https://gitversion.net/docs/>
+
+By default [this](https://github.com/elbb/bb-gitversion/blob/master/gitversion/GitVersion.yaml) GitVersion configuration is used.
+
+# Usage and Integration into your own project
+
+## Integration via docker image
+
+All stable versions of `bb-gibversion` are published in the elbb project on docker.io and can be obtained from there:
+
+`docker pull elbb/bb-gitversion`
+
+To generate a version number for the current git branch of your project, call:
+
+```bash
+docker run -v $(pwd):/git -v $(pwd)/gen:/gen elbb/bb-gitversion
+docker run -v $(pwd):/git -v $(pwd)/gen:/gen -e USERID=$(id -u) elbb/bb-gitversion
+```
+
+After a successful scan the `./gen` directory looks like this:
+
+```bash
+./gen/json/gitversion.json
+./gen/cpp/version.h
+./gen/env/gitversion.env
+./gen/plain/Minor
+./gen/plain/BuildMetaDataPadded
+./gen/plain/MajorMinorPatch
+./gen/plain/AssemblySemVer
+./gen/plain/LegacySemVerPadded
+...
+```
+
+The generated files can now be used and evaluated by other applications/ci-systems, e.g. the concourse pipeline of this repository uses bb-gitversion itself.
+
+## Integration via dobi
+
+Use our [bb-buildingblock](https://github.com/elbb/bb-buildingblock.git) `elbb` project template to bootstrap your project. It already integrates `bb-gitversion`.<br>
+This repository itself uses `bb-gitversion` for versioning via `./dobi.sh`. The `dobi` target `version` is implicitly called for all other `dobi` targets.  <br>
+`./dobi.sh`:
+```bash
+${dobi} --filename meta.yaml version
+```
+`meta.yaml` includes `version.yaml` which you can use to integrate and adapt to your needs.
 
 # Build
 
@@ -23,151 +64,53 @@ The corresponding image can be created manually or e.g. via dobi (<https://githu
 
 ## Prerequisites
 
--   dobi (<https://github.com/dnephin/dobi>)
--   docker (<https://docs.docker.com/install/>)
+-   [docker](https://docs.docker.com/install/)
+-   [dobi](https://github.com/dnephin/dobi) (downloaded if not in `PATH`)
+-   [concourse](https://concourse-ci.org/) (ci/cd)
 
-## Build and publish
+## Using dobi for local build
 
-To build the image, simply call the appropriate dobi resource:
+dobi should only be used via the `dobi.sh` script, because there important variables are set and the right scripts are included.
 
-```bash
-./dobi.sh build
-```
-
-To publish the image in a registry, the image resource is called with the option push.
+The following dobi resources are available:
 
 ```bash
-./dobi.sh image-gitversion:push
+./dobi.sh build     #build gitversion container image
+./dobi.sh deploy    #deploy gitversion container image to registry
+ ./dobi.sh version  #generate version informations (auto called by dobi.sh
 ```
 
-The image name and registry can be adjusted via environment variable $GITVERSION_IMAGE. The default repository is <https://hub.docker.com/r/elbb/bb-gitversion>.
+### Default project variables
 
-```bash
-export GITVERSION_IMAGE=REPO_NAME/IMAGE_NAME ./dobi.sh image-gitversion:push
-```
+Edit `./default.env` to set default project variables.
 
-# Usage and Integrate into your own project
+### Local project variables
 
-There are several ways to integrate this building block into your project. The preferred way is via dockerfile.
-
-## Integration via dockerfile
-
-All stable versions of the building block are published in the elbb project on docker.io and can be obtained from there:
-
-`docker pull elbb/bb-gitversion:dev`
-
-To generate a version number for the current git branch docker is called as follows:
-
-```bash
-docker run -v $(pwd):/git -v $(pwd)/gen:/gen elbb/bb-gitversion:dev
-docker run -v $(pwd):/git -v $(pwd)/gen:/gen -e USERID=$(id -u) elbb/bb-gitversion:dev
-```
-
-The repository to be scanned is mounted under `/git`. The generated files are stored under `/gen`.
-To use the generated files, it is recommended to pass the current userid per environment variable to the container.
-
-After a successful scan the gen directory looks like this:
-
-```bash
-gen/json/gitversion.json
-gen/cpp/version.h
-gen/env/gitversion.env
-gen/plain/Minor
-gen/plain/BuildMetaDataPadded
-gen/plain/MajorMinorPatch
-gen/plain/AssemblySemVer
-gen/plain/LegacySemVerPadded
-...
-```
-
-The generated files can now be used and evaluated by other applications/ci-systems.
-
-## Integration via dobi
-
-Wrapped in a dobi script the previous example looks like this:
-
-```yaml
-mount=mount-git:
-  bind: .
-  path: /git
-  read-only: false # needs to be read/write to work correctly!
-
-mount=mount-gen:
-  bind: ./gen/
-  path: /gen
-  read-only: false
-
-image=image-gitversion:
-  image: elbb/bb-gitversion
-  tags: ["dev"]
-  pull: once
-
-job=generate-version:
-  use: image-gitversion
-  mounts:
-  - mount-git
-  - mount-gen
-  env:
-  - "USERID={user.uid}"
-```
-
-## Customization of working directories
-
-The user of this building block can specify the place where the `git` and the `gen` directories are created. 
-This is done by setting the environment variables `GIT_PATH` and `GEN_PATH`. Usually this is not needed for local builds, because docker is able to make mounts to the default directories like `/git` and `/gen`. However some systems like concourse CI aren't able to do something like that. In those cases it might be useful to be able to set those paths.
-
-## Integration via git mechanisms
-
-**_Currently there is no really nice way to integrate dobi scripts from other projects into your own. This is mainly due to the fact that first of all there are no namespaces or similars, which means that uniqueness of dobi resources has to be created manually. Secondly, and this makes things even more complicated, paths always refer to the root document. This means that when a subscript is included in a project, all path specifications may need to be adjusted.If you keep both in mind, you can easily integrate dobi-based projects into other projects with a little effort._**
-
-_Integration via git mechanisms is only recommended if changes are made to the building block and these are to be managed together with the project. Integration via docker image is much easier._
-
-For git based integration it is first necessary to integrate the source code so that the dobi script of the project can access the scripts of the building block.
-
-Recommended methods for integration are either per `git submodule` (if no adjustments to the building block are necessary) or per `git subtree` (if it should be adjusted).
-
-In the dobi meta section of your own project you have to include all dobi files integrated in meta.yaml. This way all resources defined by bb-gitversion will be included in your project and can be executed.
-
-To work correctly it is also necessary to adapt all paths to the new root and if necessary to make the naming of the dobi resources unique (see note).
-
-Furthermore, it is possible that you need to adapt the mount-points listed in dobi.yaml to your projects needs.
-
-After that, you can use the building block to generate version informations for you:
-
-```yaml
-mount=mount-git:
-  bind: .
-  path: /git
-  read-only: false # needs to be read/write to work correctly!
-
-mount=mount-gen:
-  bind: ./gen/
-  path: /gen
-  read-only: false
-
-job=generate-version:
-  use: image-gitversion
-  mounts:
-  - mount-git
-  - mount-gen
-  env:
-  - "USERID={user.uid}"
-```
+If you want to override project variables, copy `./local.env.template` to `./local.env` and edit `./local.env` accordingly.<br>
+`./local.env` is ignored by git via `./.gitignore`.
 
 ## Using concourse CI for a CI/CD build
 
-The pipeline file must be uploaded to concourse CI via `fly`. 
-Enter the build users ssh private key into the file `ci/credentials.template.yaml` and rename it to `ci/credentials.yaml`. 
+The pipeline file must be uploaded to concourse CI via `fly`.
+Enter the build users ssh private key into the file `ci/credentials.template.yaml` and rename it to `ci/credentials.yaml`.
+Copy the file `ci/email.template.yaml` to `ci/email.yaml` and enter the email server configuration and email addresses.
+For further information how to configure the email notification, see: <https://github.com/pivotal-cf/email-resource>
 
-**Note: `credentials.yaml` is ignored by `.gitignore` and will not be checked in.**
+**Note: `credentials.yaml` and `email.yaml` are ignored by `.gitignore` and will not be checked in.**
 
 In further releases there will be a key value store to keep track of the users credentials.
 Before setting the pipeline you might login first to your concourse instance `fly -t <target> login --concourse-url http://<concourse>:<port>`. See the [fly documentation](https://concourse-ci.org/fly.html) for more help.
 Upload the pipeline file with fly:
 
-    $ fly -t <target> set-pipeline -n -p bb-buildingblock -l ci/config.yaml -l ci/credentials.yaml -c pipeline.yaml
+    $ fly -t <target> set-pipeline -n -p bb-gitversion -l ci/config.yaml -l ci/credentials.yaml -l ci/email.yaml -c pipeline.yaml
 
 After successfully uploading the pipeline to concourse CI login and unpause it. After that the pipeline should be triggered by new commits on the master branch (or new tags if enabled in `pipeline.yaml`).
+
+# Troubleshooting
+
+## Customization of working directories
+
+Some CI/CD systems, e.g. concourse, don't provide the possibility to explicitly force the specific mount directories `/git` and `/gen` in the instantiated `bb-gitversion` container. You can set the environment variables `GIT_PATH` and `GEN_PATH` in this case.
 
 # What is embedded linux building blocks
 

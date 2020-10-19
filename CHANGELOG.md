@@ -5,15 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.7.0] - 2020.Q4
 
 -  updated ci pipeline tagging (reintegrated bb-buildingblock)
+-  added `default.env`, `local.env.template` and doku how to use it -> enables setting default and local environment variables for `dobi` targets
+-  `dobi.sh` downloads `dobi` if `dobi` is not `$PATH`
+-  `dobi.sh`: parameter checking and handling for `dobi` target `list` and `dobi.sh` target `version`
+-  added email notification on error/success in `concourse` pipeline
 
 ## [0.6.2] - 2020.Q2
 
 ### Added
 
--   added branch version to gitversion json file. 
+-   added branch version to gitversion json file.
 -   the genenrated files (plain, env and cpp now also contain the branch version)
 
 ## [0.6.1] - 2020.Q2
@@ -54,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   replaced '+' characters with '-' for greater compability e.g. docker tags
--   introduced branch specific version files e.g. 
+-   introduced branch specific version files e.g.
     master branch gets `FullSemVer`, any other branches get `InformationalVersion`
 
 ## [0.3.0] - 2020-05-19

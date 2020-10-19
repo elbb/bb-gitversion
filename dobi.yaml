@@ -2,25 +2,14 @@
 # alias
 # ===================================================
 
-alias=bb-gitversion-version:
+alias=build:
   tasks:
-  - gitversion-version
+  - image-gitversion
   annotations:
-    description: "-> generate version informations (auto called by dobi.sh)"
+    description: "-> build gitversion container image"
 
-alias=bb-gitversion-build:
-  tasks:
-  - gitversion-build
-  annotations:
-    description: "-> build all content"
-
-alias=bb-gitversion-deploy:
+alias=deploy:
   tasks:
   - image-gitversion:push
   annotations:
-    description: "-> deploy all content"
-
-alias=bb-gitversion-test: 
-  tasks: []
-  annotations: 
-    description: "-> test all content (not implemented yet)"
+    description: "-> deploy gitversion container image"
