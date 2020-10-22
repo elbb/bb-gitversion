@@ -2,13 +2,13 @@
 # mount points
 # ===================================================
 
-mount=mount-gitversion-source-dir:
-  bind: .
+mount=mount-buildingblock-gitversion-source-dir:
+  bind: "{fs.projectdir}"
   path: /git
   read-only: false # needs to be read/write to work correctly!
 
-mount=mount-gitversion-gen-dir:
-  bind: gen/gitversion
+mount=mount-buildingblock-gitversion-gen-dir:
+  bind: "{fs.projectdir}/gen/gitversion"
   path: /gen
   read-only: false
 
@@ -16,21 +16,23 @@ mount=mount-gitversion-gen-dir:
 # images
 # ===================================================
 
-image=image-bb-gitversion:
-  image: elbb/bb-gitversion
-  tags: ["0.6.2"]
+image=image-buildingblock-gitversion:
+  image: "{env.BB_DOCKER_NAMESPACE}/bb-gitversion"
+  tags: ["{env.VERSION_BB_GITVERSION}"]
   pull: once
 
 # ===================================================
 # jobs
 # ===================================================
 
-job=gitversion-version:
-  use: image-bb-gitversion
+job=version:
+  use: image-buildingblock-gitversion
   mounts:
-    - mount-gitversion-source-dir
-    - mount-gitversion-gen-dir
-  sources: .
-  artifact: gen/gitversion/
+    - mount-buildingblock-gitversion-source-dir
+    - mount-buildingblock-gitversion-gen-dir
+  sources: "./"
+  artifact: "gen/gitversion/"
   env:
     - "USERID={user.uid}"
+  annotations:
+    description: "-> generate version informations (auto called by dobi.sh)"
