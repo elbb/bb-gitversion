@@ -27,25 +27,31 @@ fi
 
 useradd --shell /bin/bash -u ${USERID} -o -c "" -m user
 
+if [ -z "$DEFAULT_BRANCH" ]; then
+  DEFAULT_BRANCH=master
+fi
+sed 's/@@MASTER@@/'${DEFAULT_BRANCH}'/g' /tools/GitVersion.yaml > /tmp/GitVersion.yaml
+
 ###### generate json ######
 
 # generate json file with git version infos
 JSON_DIR=${GEN}/json
 mkdir -p ${JSON_DIR}
-/tools/dotnet-gitversion ${GIT} /config /tools/GitVersion.yaml > ${JSON_DIR}/gitversion.json
-
-# replace '+' with '-' in version strings due to incompabilities for e.g. docker
-sed -i 's/+/-/g' ${JSON_DIR}/gitversion.json
+/tools/dotnet-gitversion ${GIT} /config /tmp/GitVersion.yaml > ${JSON_DIR}/gitversion.json
 
 ###### append branch version to json ######
-if [ "$(cat ${JSON_DIR}/gitversion.json | jq -r .BranchName)" == "master" ]; then
+if [ "$(cat ${JSON_DIR}/gitversion.json | jq -r .BranchName)" == "${DEFAULT_BRANCH}" ]; then
     targetVersion="FullSemVer"
 else
     targetVersion="InformationalVersion"
 fi
 targetVersionInfo=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})
-cat ${JSON_DIR}/gitversion.json | jq --arg value ${targetVersionInfo} '.+{BranchVersion: $value }' > ${JSON_DIR}/gitversion_append.json
-mv ${JSON_DIR}/gitversion_append.json ${JSON_DIR}/gitversion.json
+cat ${JSON_DIR}/gitversion.json | jq --arg value ${targetVersionInfo} '.+{BranchVersion: $value }' > /tmp/gitversion2.json
+targetVersionInfoDockerLabel=$(sed 's/+/-/g' <<< ${targetVersionInfo})
+cat /tmp/gitversion2.json | jq --arg value ${targetVersionInfoDockerLabel} '.+{BranchVersionDockerLabel: $value }' > /tmp/gitversion3.json
+#fullSemver=$(cat ${JSON_DIR}/gitversion.json | jq -r .FullSemVer)
+fullSemVerDockerLabel=$(sed 's/+/-/g' <<< $(cat ${JSON_DIR}/gitversion.json | jq -r .FullSemVer))
+cat /tmp/gitversion3.json | jq --arg value ${fullSemVerDockerLabel} '.+{FullSemVerDockerLabel: $value }' > ${JSON_DIR}/gitversion.json
 
 ###### generate env file ######
 
@@ -56,6 +62,9 @@ mkdir -p ${ENV_DIR}
 
 # parse json and create sourceable file with git version infos
 for s in $(cat ${JSON_DIR}/gitversion.json | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
+  if [ ${VERBOSE} -eq 1 ]; then
+    echo "GitVersion_$s"
+  fi
   echo "export GitVersion_$s" >> $ENV_DIR/gitversion.env
 done
 
