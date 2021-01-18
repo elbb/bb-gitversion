@@ -62,7 +62,7 @@ mkdir -p ${ENV_DIR}
 
 # parse json and create sourceable file with git version infos
 for s in $(cat ${JSON_DIR}/gitversion.json | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
-  if [ ${VERBOSE} -eq 1 ]; then
+  if [ "${VERBOSE}" == "1" ]; then
     echo "GitVersion_$s"
   fi
   echo "export GitVersion_$s" >> $ENV_DIR/gitversion.env
