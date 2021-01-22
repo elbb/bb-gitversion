@@ -49,7 +49,6 @@ targetVersionInfo=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})
 cat ${JSON_DIR}/gitversion.json | jq --arg value ${targetVersionInfo} '.+{BranchVersion: $value }' > /tmp/gitversion2.json
 targetVersionInfoDockerLabel=$(sed 's/+/-/g' <<< ${targetVersionInfo})
 cat /tmp/gitversion2.json | jq --arg value ${targetVersionInfoDockerLabel} '.+{BranchVersionDockerLabel: $value }' > /tmp/gitversion3.json
-#fullSemver=$(cat ${JSON_DIR}/gitversion.json | jq -r .FullSemVer)
 fullSemVerDockerLabel=$(sed 's/+/-/g' <<< $(cat ${JSON_DIR}/gitversion.json | jq -r .FullSemVer))
 cat /tmp/gitversion3.json | jq --arg value ${fullSemVerDockerLabel} '.+{FullSemVerDockerLabel: $value }' > ${JSON_DIR}/gitversion.json
 
