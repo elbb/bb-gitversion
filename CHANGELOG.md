@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2021.Q1
+
 - add docker user/password for all docker images used for concourse ci
+- **breaking change**: if you use bb-gitversion to label docker images use now `GitVersion_FullSemVerDockerLabel` or `GitVersion_BranchVersionDockerLabel`; this version does not replace `+` with `-` in all `GitVersion_`-variables anymore
+- set the environment variable `DEFAULT_BRANCH` to configure the default branch of the repository; per default `DEFAULT_BRANCH==master`;
+- set the environment variable `VERBOSE=1` to print generated gitversion variables
 
 ## [0.7.0] - 2020.Q4
 

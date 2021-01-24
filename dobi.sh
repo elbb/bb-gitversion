@@ -52,7 +52,7 @@ if [[ -z ${1} || "list" == ${@: -1} ]]; then
 fi
 
 if [[ "version" !=  ${@: -1} ]]; then
-    ${dobi} --filename meta.yaml version # generate actual version files
+    VERSION_VERBOSE=0 ${dobi} --filename meta.yaml version # generate actual version files
     # load generated version infos
     source gen/gitversion/env/gitversion.env
 fi

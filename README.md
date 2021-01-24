@@ -13,6 +13,22 @@ For more information, see <https://gitversion.net/docs/>
 
 By default [this](https://github.com/elbb/bb-gitversion/blob/master/gitversion/GitVersion.yaml) GitVersion configuration is used.
 
+## Characteristic Features
+
+### `GitVersion_BranchVersion`
+Depending on the default branch of your repository `bb-gitversion` creates the variable `GitVersion_Branchversion` with content equal to `GitVersion_FullSemVer` if the branch is the default branch. On any other branch `GitVersion_Branchversion` equals to `GitVersion_InformationalVersion`. You can configure the default branch via setting the environment variable `DEFAULT_BRANCH` when executing bb-gitversion.
+
+### GitVersion for labeling `docker` images
+You can not use a version info compliant to https://semver.org/ for labeling `docker` images. `docker` doesnt allow the character `+` in a label.
+Therefore `bb-gitversion` provides the variables `GitVersion_FullSemVerDockerLabel` and `GitVersion_BranchVersionDockerLabel` which have content analog to `GitVersion_FullSemVer` and `GitVersion_BranchVersion` where `+` is replaced with `-`.
+
+## Options
+Options are set via environment variables.
+
+- `DEFAULT_BRANCH` - sets the default branch of the repository
+- `USER_ID` - the user id which is used to generate the version information files
+- `VERBOSE` - {0,1} print `bb-gitversion` variables on generation
+
 # Usage and Integration into your own project
 
 ## Integration via docker image
@@ -25,7 +41,7 @@ To generate a version number for the current git branch of your project, call:
 
 ```bash
 docker run -v $(pwd):/git -v $(pwd)/gen:/gen elbb/bb-gitversion
-docker run -v $(pwd):/git -v $(pwd)/gen:/gen -e USERID=$(id -u) elbb/bb-gitversion
+docker run -v $(pwd):/git -v $(pwd)/gen:/gen -e USERID=$(id -u) -e DEFAULT_BRANCH=master -e VERBOSE=1 elbb/bb-gitversion
 ```
 
 After a successful scan the `./gen` directory looks like this:
