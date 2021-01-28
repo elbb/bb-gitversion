@@ -1,9 +1,7 @@
-FROM gittools/gitversion:5.6.4-ubuntu.20.04-x64-5.0
-# install necessary tooling for jq installation
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget gpg gnupg-agent jq python-jinja2 && \
-    rm -rf /var/lib/apt/lists/*
+FROM gittools/gitversion:5.6.4-alpine.3.12-x64-3.1
 
+# install necessary tooling for jq installation
+RUN apk add bash jq py3-jinja2 --no-cache
 # copy GitVersion configuration
 COPY GitVersion.yaml /tools/GitVersion.yaml
 

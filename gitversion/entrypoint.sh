@@ -20,12 +20,19 @@ if [ ! -d "${GIT}" ]; then
   exit 1
 fi
 
+# for detached branches we checkout GIT_BRANCH explicitly
+if [ ! -z "${GIT_BRANCH}" ]; then
+  cd ${GIT}
+  git checkout ${GIT_BRANCH}
+  cd -
+fi
+
 if [ -z "${USERID}" ]; then
   echo "No user id supplied. Using default id '9001'"
   USERID=9001
 fi
 
-useradd --shell /bin/bash -u ${USERID} -o -c "" -m user
+adduser -s /bin/bash -D -H -u ${USERID} user
 
 if [ -z "$DEFAULT_BRANCH" ]; then
   DEFAULT_BRANCH=master

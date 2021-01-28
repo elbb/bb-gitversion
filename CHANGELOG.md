@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] - 2021.Q1
+
+- introduced environment variable `GIT_BRANCH` - optional, set to branchname if checkout is in detached state (e.g. detached checkout by ci/cd) (cause: upstream gittools/gitversion currently detects head commit of detached checkouts in branch "branchname" and "origin/branchname" which is not unambiguous)
+- use gittools/gitversion in alpine flavour
+
 ## [0.8.0] - 2021.Q1
 
 - add docker user/password for all docker images used for concourse ci

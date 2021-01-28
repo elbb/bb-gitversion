@@ -26,6 +26,7 @@ Therefore `bb-gitversion` provides the variables `GitVersion_FullSemVerDockerLab
 Options are set via environment variables.
 
 - `DEFAULT_BRANCH` - sets the default branch of the repository
+- `GIT_BRANCH` - optional, set to branchname if checkout is in detached state (e.g. detached checkout by ci/cd)
 - `USER_ID` - the user id which is used to generate the version information files
 - `VERBOSE` - {0,1} print `bb-gitversion` variables on generation
 
