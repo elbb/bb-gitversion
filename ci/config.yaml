@@ -13,7 +13,7 @@ bb_insecure_registries: []
 bb_release_as_latest: true
 
 ## Specifies the version used for bb-gitversion
-bb_gitversion_version: 0.8.1
+bb_gitversion_version: 0.8.2
 
 # Git relevant stuff
 # ------------------

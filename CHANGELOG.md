@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.2] - 2021.Q1
+
+- fixed parsing of `DEFAULT_BRANCH` when it includes a slash
+
 ## [0.8.1] - 2021.Q1
 
 - introduced environment variable `GIT_BRANCH` - optional, set to branchname if checkout is in detached state (e.g. detached checkout by ci/cd) (cause: upstream gittools/gitversion currently detects head commit of detached checkouts in branch "branchname" and "origin/branchname" which is not unambiguous)
