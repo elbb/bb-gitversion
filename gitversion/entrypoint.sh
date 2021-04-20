@@ -57,7 +57,9 @@ cat ${JSON_DIR}/gitversion.json | jq --arg value ${targetVersionInfo} '.+{Branch
 targetVersionInfoDockerLabel=$(sed 's/+/-/g' <<< ${targetVersionInfo})
 cat /tmp/gitversion2.json | jq --arg value ${targetVersionInfoDockerLabel} '.+{BranchVersionDockerLabel: $value }' > /tmp/gitversion3.json
 fullSemVerDockerLabel=$(sed 's/+/-/g' <<< $(cat ${JSON_DIR}/gitversion.json | jq -r .FullSemVer))
-cat /tmp/gitversion3.json | jq --arg value ${fullSemVerDockerLabel} '.+{FullSemVerDockerLabel: $value }' > ${JSON_DIR}/gitversion.json
+cat /tmp/gitversion3.json | jq --arg value ${fullSemVerDockerLabel} '.+{FullSemVerDockerLabel: $value }' > /tmp/gitversion4.json
+informationalVersionDockerLabel=$(sed 's/+/-/g' <<< $(cat ${JSON_DIR}/gitversion.json | jq -r .InformationalVersion))
+cat /tmp/gitversion4.json | jq --arg value ${informationalVersionDockerLabel} '.+{InformationalVersionDockerLabel: $value }' > ${JSON_DIR}/gitversion.json
 
 ###### generate env file ######
 

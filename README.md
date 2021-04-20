@@ -20,7 +20,7 @@ Depending on the default branch of your repository `bb-gitversion` creates the v
 
 ### GitVersion for labeling `docker` images
 You can not use a version info compliant to https://semver.org/ for labeling `docker` images. `docker` doesnt allow the character `+` in a label.
-Therefore `bb-gitversion` provides the variables `GitVersion_FullSemVerDockerLabel` and `GitVersion_BranchVersionDockerLabel` which have content analog to `GitVersion_FullSemVer` and `GitVersion_BranchVersion` where `+` is replaced with `-`.
+Therefore `bb-gitversion` provides the variables `GitVersion_FullSemVerDockerLabel`, `GitVersion_BranchVersionDockerLabel` and `GitVersion_InformationalVersionDockerLabel` which have content analog to `GitVersion_FullSemVer`, `GitVersion_BranchVersion` and `GitVersion_InformationalVersion` where `+` is replaced with `-`.
 
 ## Options
 Options are set via environment variables.

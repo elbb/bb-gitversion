@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.3] - 2021.Q2
+
+- added `GitVersion_InformationalVersionDockerLabel` that replaces the `+` to `-` `from GitVersion_InformationalVersion`
+
 ## [0.8.2] - 2021.Q1
 
 - fixed parsing of `DEFAULT_BRANCH` when it includes a slash
