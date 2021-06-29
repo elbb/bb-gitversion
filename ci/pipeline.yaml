@@ -104,4 +104,4 @@ jobs:
           build: source/gitversion
           dockerfile: source/gitversion/Dockerfile
           tag_as_latest: ((bb_release_as_latest))
-          tag_file: gitversion/plain/BranchVersion
+          tag_file: gitversion/plain/BranchVersionDockerLabel
