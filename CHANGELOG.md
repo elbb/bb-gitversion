@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- fix race getting gitversion in pipeline
+- mv pipeline.yaml -> ci/pipeline.yaml
+- changed default branch master -> main
+
 ## [0.8.3] - 2021.Q2
 
 - added `GitVersion_InformationalVersionDockerLabel` that replaces the `+` to `-` `from GitVersion_InformationalVersion`
