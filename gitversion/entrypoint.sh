@@ -35,9 +35,9 @@ fi
 adduser -s /bin/bash -D -H -u ${USERID} user
 
 if [ -z "$DEFAULT_BRANCH" ]; then
-  DEFAULT_BRANCH=master
+  DEFAULT_BRANCH=main
 fi
-sed 's?@@MASTER@@?'${DEFAULT_BRANCH}'?g' /tools/GitVersion.yaml > /tmp/GitVersion.yaml
+sed 's?@@MAIN@@?'${DEFAULT_BRANCH}'?g' /tools/GitVersion.yaml > /tmp/GitVersion.yaml
 
 ###### generate json ######
 

@@ -78,6 +78,7 @@ jobs:
           - get: source
             trigger: true
           - get: image-bb-gitversion-tool
+
       - task: generate-version
         image: image-bb-gitversion-tool
         config:

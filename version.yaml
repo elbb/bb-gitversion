@@ -34,7 +34,7 @@ job=version:
   artifact: "gen/gitversion/"
   env:
     - "USERID={user.uid}"
-    - "DEFAULT_BRANCH={env.DEFAULT_BRANCH:master}"
+    - "DEFAULT_BRANCH={env.DEFAULT_BRANCH:main}"
     - "VERBOSE={env.VERSION_VERBOSE:1}"
   annotations:
     description: "-> generate version informations (auto called by dobi.sh)"
