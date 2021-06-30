@@ -1,4 +1,4 @@
-FROM gittools/gitversion:5.6.4-alpine.3.12-x64-3.1
+FROM gittools/gitversion:5.6.11-alpine.3.12-x64-5.0
 
 # install necessary tooling for jq installation
 RUN apk add bash jq py3-jinja2 --no-cache

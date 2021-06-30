@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/elbb/bb-gitversion/master/.assets/logo.png" height="200">
+<img src="https://raw.githubusercontent.com/elbb/bb-gitversion/main/.assets/logo.png" height="200">
 
 # (e)mbedded (l)inux (b)uilding (b)locks - containerized GitVersion (with some improvements)
 
@@ -11,7 +11,7 @@ This building block integrates GitVersion ("GitVersion looks at your git history
 
 For more information, see <https://gitversion.net/docs/>
 
-By default [this](https://github.com/elbb/bb-gitversion/blob/master/gitversion/GitVersion.yaml) GitVersion configuration is used.
+By default [this](https://github.com/elbb/bb-gitversion/blob/main/gitversion/GitVersion.yaml) GitVersion configuration is used.
 
 ## Characteristic Features
 
@@ -42,7 +42,7 @@ To generate a version number for the current git branch of your project, call:
 
 ```bash
 docker run -v $(pwd):/git -v $(pwd)/gen:/gen elbb/bb-gitversion
-docker run -v $(pwd):/git -v $(pwd)/gen:/gen -e USERID=$(id -u) -e DEFAULT_BRANCH=master -e VERBOSE=1 elbb/bb-gitversion
+docker run -v $(pwd):/git -v $(pwd)/gen:/gen -e USERID=$(id -u) -e DEFAULT_BRANCH=main -e VERBOSE=1 elbb/bb-gitversion
 ```
 
 After a successful scan the `./gen` directory looks like this:
@@ -119,9 +119,9 @@ In further releases there will be a key value store to keep track of the users c
 Before setting the pipeline you might login first to your concourse instance `fly -t <target> login --concourse-url http://<concourse>:<port>`. See the [fly documentation](https://concourse-ci.org/fly.html) for more help.
 Upload the pipeline file with fly:
 
-    $ fly -t <target> set-pipeline -n -p bb-gitversion -l ci/config.yaml -l ci/credentials.yaml -l ci/email.yaml -c pipeline.yaml
+    $ fly -t <target> set-pipeline -n -p bb-gitversion -l ci/config.yaml -l ci/credentials.yaml -l ci/email.yaml -c ci/pipeline.yaml
 
-After successfully uploading the pipeline to concourse CI login and unpause it. After that the pipeline should be triggered by new commits on the master branch (or new tags if enabled in `pipeline.yaml`).
+After successfully uploading the pipeline to concourse CI login and unpause it. After that the pipeline should be triggered by new commits on the main branch (or new tags if enabled in `ci/pipeline.yaml`).
 
 # Troubleshooting
 
@@ -151,4 +151,4 @@ submitted for inclusion in the work by you, as defined in the Apache-2.0
 license, shall be dual licensed as above, without any additional terms or
 conditions.
 
-Copyright (c) 2020 conplement AG
+Copyright (c) 2020-2021 conplement AG
