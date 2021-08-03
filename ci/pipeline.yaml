@@ -105,4 +105,63 @@ jobs:
           build: source/gitversion
           dockerfile: source/gitversion/Dockerfile
           tag_as_latest: ((bb_release_as_latest))
-          tag_file: gitversion/plain/BranchVersionDockerLabel
+          tag_file: gitversion/plain/FullSemVerDockerLabel
+
+      - task: regression-test
+        image: image-((bb_name))
+        config:
+          platform: linux
+          inputs:
+            - name: source
+          outputs:
+            - name: gitversion
+          run:
+            path: /bin/bash
+            args:
+              - -exc
+              - |
+                # create test repo with commit
+                mkdir test
+                cd test
+                git config --global user.email "you@example.com"
+                git config --global user.name "Your Name"
+                git init
+                git checkout -b main
+                touch foo
+                git add foo
+                git commit -a -m "foo commited"
+                # generate gitversion
+                export GIT_PATH=$(pwd)
+                cd ..
+                mkdir gen
+                export GEN_PATH=$(pwd)/gen
+                cd ${GIT_PATH}
+
+                function test_version () {
+                  entrypoint.sh
+                  FullSemVerDockerLabel=$(jq .FullSemVerDockerLabel ${GEN_PATH}/json/gitversion.json | xargs)
+                  if [ "${1}" != "${FullSemVerDockerLabel}" ]; then
+                    echo "found unexpected version: FullSemVerDockerLabel=${FullSemVerDockerLabel}"
+                    echo "expected version: ${1}"
+                    exit 1
+                  fi
+                }
+
+                test_version "0.1.0-0"
+
+                git tag "0.2.0"
+                test_version "0.2.0"
+
+                git checkout -b foobar
+                touch bar
+                git add bar
+                git commit -a -m "bar commited"
+                test_version "0.2.0-foobar.1"
+
+                git checkout -b foo/bar
+                test_version "0.2.0-foo-bar.1"
+
+                touch foobar
+                git add foobar
+                git commit -a -m "foobar commited"
+                test_version "0.2.0-foo-bar.2"

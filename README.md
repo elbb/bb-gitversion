@@ -15,12 +15,9 @@ By default [this](https://github.com/elbb/bb-gitversion/blob/main/gitversion/Git
 
 ## Characteristic Features
 
-### `GitVersion_BranchVersion`
-Depending on the default branch of your repository `bb-gitversion` creates the variable `GitVersion_Branchversion` with content equal to `GitVersion_FullSemVer` if the branch is the default branch. On any other branch `GitVersion_Branchversion` equals to `GitVersion_InformationalVersion`. You can configure the default branch via setting the environment variable `DEFAULT_BRANCH` when executing bb-gitversion.
-
 ### GitVersion for labeling `docker` images
 You can not use a version info compliant to https://semver.org/ for labeling `docker` images. `docker` doesnt allow the character `+` in a label.
-Therefore `bb-gitversion` provides the variables `GitVersion_FullSemVerDockerLabel`, `GitVersion_BranchVersionDockerLabel` and `GitVersion_InformationalVersionDockerLabel` which have content analog to `GitVersion_FullSemVer`, `GitVersion_BranchVersion` and `GitVersion_InformationalVersion` where `+` is replaced with `-`.
+Therefore `bb-gitversion` provides the variables `GitVersion_FullSemVerDockerLabel` and `GitVersion_InformationalVersionDockerLabel` which have content analog to `GitVersion_FullSemVer` and `GitVersion_InformationalVersion` where `+` is replaced with `-`.
 
 ## Options
 Options are set via environment variables.

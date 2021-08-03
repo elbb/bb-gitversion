@@ -32,7 +32,7 @@ if [ -z "${USERID}" ]; then
   USERID=9001
 fi
 
-adduser -s /bin/bash -D -H -u ${USERID} user
+adduser -s /bin/bash -D -H -u ${USERID} user || true
 
 if [ -z "$DEFAULT_BRANCH" ]; then
   DEFAULT_BRANCH=main
@@ -45,21 +45,10 @@ sed 's?@@MAIN@@?'${DEFAULT_BRANCH}'?g' /tools/GitVersion.yaml > /tmp/GitVersion.
 JSON_DIR=${GEN}/json
 mkdir -p ${JSON_DIR}
 /tools/dotnet-gitversion ${GIT} /config /tmp/GitVersion.yaml > ${JSON_DIR}/gitversion.json
-
-###### append branch version to json ######
-if [ "$(cat ${JSON_DIR}/gitversion.json | jq -r .BranchName)" == "${DEFAULT_BRANCH}" ]; then
-    targetVersion="FullSemVer"
-else
-    targetVersion="InformationalVersion"
-fi
-targetVersionInfo=$(cat ${JSON_DIR}/gitversion.json | jq -r .${targetVersion})
-cat ${JSON_DIR}/gitversion.json | jq --arg value ${targetVersionInfo} '.+{BranchVersion: $value }' > /tmp/gitversion2.json
-targetVersionInfoDockerLabel=$(sed 's/+/-/g' <<< ${targetVersionInfo})
-cat /tmp/gitversion2.json | jq --arg value ${targetVersionInfoDockerLabel} '.+{BranchVersionDockerLabel: $value }' > /tmp/gitversion3.json
 fullSemVerDockerLabel=$(sed 's/+/-/g' <<< $(cat ${JSON_DIR}/gitversion.json | jq -r .FullSemVer))
-cat /tmp/gitversion3.json | jq --arg value ${fullSemVerDockerLabel} '.+{FullSemVerDockerLabel: $value }' > /tmp/gitversion4.json
+cat ${JSON_DIR}/gitversion.json | jq --arg value ${fullSemVerDockerLabel} '.+{FullSemVerDockerLabel: $value }' > /tmp/gitversion2.json
 informationalVersionDockerLabel=$(sed 's/+/-/g' <<< $(cat ${JSON_DIR}/gitversion.json | jq -r .InformationalVersion))
-cat /tmp/gitversion4.json | jq --arg value ${informationalVersionDockerLabel} '.+{InformationalVersionDockerLabel: $value }' > ${JSON_DIR}/gitversion.json
+cat /tmp/gitversion2.json | jq --arg value ${informationalVersionDockerLabel} '.+{InformationalVersionDockerLabel: $value }' > ${JSON_DIR}/gitversion.json
 
 ###### generate env file ######
 

@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2021.Q3
+
+- cicd: add regression test
+- **breaking change**:  rm `GitVersion_BranchVersion` and `GitVersion_BranchVersionDockerLabel`
+- update gitversion config
+    - rename master -> main for main branch
+    - reconfigure mode of feature branch to ContinuousDeployment
+- entrypoint.sh: add user only if not already existing
+
 ## [0.8.4] - 2021.Q2
 
 - use upstream gitversion 5.6.11
