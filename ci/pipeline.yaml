@@ -111,10 +111,6 @@ jobs:
         image: image-((bb_name))
         config:
           platform: linux
-          inputs:
-            - name: source
-          outputs:
-            - name: gitversion
           run:
             path: /bin/bash
             args:
