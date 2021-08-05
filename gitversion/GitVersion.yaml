@@ -12,8 +12,9 @@ build-metadata-padding: 4
 commits-since-version-source-padding: 4
 commit-message-incrementing: Enabled
 branches:
-  master:
+  main:
     mode: ContinuousDelivery
+    tag: ''
     increment: None
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
@@ -26,7 +27,7 @@ branches:
     is-mainline: true
     pre-release-weight: 55000
   feature:
-    mode: ContinuousDelivery
+    mode: ContinuousDeployment
     tag: useBranchName
     increment: None
     prevent-increment-of-merged-branch-version: false
