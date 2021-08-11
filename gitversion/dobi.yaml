@@ -5,4 +5,4 @@
 image=image-gitversion:
   image: "{env.BB_DOCKER_NAMESPACE}/bb-gitversion"
   context: gitversion
-  tags: ["{env.GitVersion_BranchVersionDockerLabel}"]
+  tags: ["{env.GitVersion_FullSemVerDockerLabel}"]
