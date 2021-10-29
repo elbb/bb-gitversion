@@ -2,9 +2,9 @@ resource_types:
   - name: email
     type: docker-image
     source:
-      repository: pcfseceng/email-resource
-      username: ((registry_user))
-      password: ((registry_password))
+      repository: icsdm.azurecr.io/clone/pcfseceng/email-resource
+      username: ((ics_dm_registry_user))
+      password: ((ics_dm_registry_password))
       tag: 1.0.19
 
 resources:
@@ -20,16 +20,17 @@ resources:
     type: docker-image
     source:
       repository: elbb/bb-gitversion
-      username: ((registry_user))
-      password: ((registry_password))
+      username: ((docker_io_registry_user))
+      password: ((docker_io_registry_password))
       tag: ((bb_gitversion_version))
+    check_every: never
 
   - name: image-((bb_name))
     type: docker-image
     source:
       repository: ((bb_docker_namespace))/((bb_name))
-      username: ((registry_user))
-      password: ((registry_password))
+      username: ((docker_io_registry_user))
+      password: ((docker_io_registry_password))
       insecure_registries: ((bb_insecure_registries))
 
   - name: send-an-email
@@ -47,32 +48,59 @@ resources:
         login_auth: ((email_smtp_login_auth))
       from:  ((email_from))
       to: ((email_to))
+    check_every: never
+email_success_notification: &email_success_notification
+  put: send-an-email
+  params:
+    subject_text: "ci ${BUILD_PIPELINE_NAME}: build ${BUILD_ID} successfully finished"
+    body_text: |
+      Yeah!
+      Build ID: "${BUILD_ID}"
+      Build Name: "${BUILD_NAME}"
+      Build Job Name: "${BUILD_JOB_NAME}"
+      Build Pipeline Name: "${BUILD_PIPELINE_NAME}"
+      ATC External URL: "${ATC_EXTERNAL_URL}"
+email_failure_notification: &email_failure_notification
+  put: send-an-email
+  params:
+    subject_text: "ci ${BUILD_PIPELINE_NAME}: build ${BUILD_ID} failed!"
+    body_text: |
+      Oh no!
+      Build ID: "${BUILD_ID}"
+      Build Name: "${BUILD_NAME}"
+      Build Job Name: "${BUILD_JOB_NAME}"
+      Build Pipeline Name: "${BUILD_PIPELINE_NAME}"
+      ATC External URL: "${ATC_EXTERNAL_URL}"
+email_error_notification: &email_error_notification
+  put: send-an-email
+  params:
+    subject_text: "ci ${BUILD_PIPELINE_NAME}: build ${BUILD_ID} error!"
+    body_text: |
+      Oh no!
+      Build ID: "${BUILD_ID}"
+      Build Name: "${BUILD_NAME}"
+      Build Job Name: "${BUILD_JOB_NAME}"
+      Build Pipeline Name: "${BUILD_PIPELINE_NAME}"
+      ATC External URL: "${ATC_EXTERNAL_URL}"
+email_abort_notification: &email_abort_notification
+  put: send-an-email
+  params:
+    subject_text: "ci ${BUILD_PIPELINE_NAME}: build ${BUILD_ID} aborted!"
+    body_text: |
+      Oh no!
+      Build ID: "${BUILD_ID}"
+      Build Name: "${BUILD_NAME}"
+      Build Job Name: "${BUILD_JOB_NAME}"
+      Build Pipeline Name: "${BUILD_PIPELINE_NAME}"
+      ATC External URL: "${ATC_EXTERNAL_URL}"
 
 jobs:
   - name: build-and-deploy-((bb_name))
     public: true
-    on_failure:
-      put: send-an-email
-      params:
-        subject_text: "ci ${BUILD_PIPELINE_NAME}: build ${BUILD_ID} failed!"
-        body_text: |
-          Oh no!
-          Build ID: "${BUILD_ID}"
-          Build Name: "${BUILD_NAME}"
-          Build Job Name: "${BUILD_JOB_NAME}"
-          Build Pipeline Name: "${BUILD_PIPELINE_NAME}"
-          ATC External URL: "${ATC_EXTERNAL_URL}"
-    on_success:
-      put: send-an-email
-      params:
-        subject_text: "ci ${BUILD_PIPELINE_NAME}: build ${BUILD_ID} successfully finished"
-        body_text: |
-          Yeah!
-          Build ID: "${BUILD_ID}"
-          Build Name: "${BUILD_NAME}"
-          Build Job Name: "${BUILD_JOB_NAME}"
-          Build Pipeline Name: "${BUILD_PIPELINE_NAME}"
-          ATC External URL: "${ATC_EXTERNAL_URL}"
+    on_failure: *email_failure_notification
+    on_success: *email_success_notification
+    on_abort: *email_abort_notification
+    on_error: *email_error_notification
     plan:
       - in_parallel:
           - get: source
